@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Django на METANIT.COM</title>
+</head>
+<body>
+
+    <p>{{ setup }}</p>
+
+
+
+    {% for category in setup.category %}
+        <a href="/category/{{ category.link_url }}">{{ category.title }}</a>
+
+    {% endfor %}
+
+
+
+</body>
+</html>
