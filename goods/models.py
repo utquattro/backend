@@ -115,3 +115,4 @@ class ProductConfig(models.Model):
 
     class Meta:
         unique_together = ('product_property', 'product_item')
+

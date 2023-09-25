@@ -1,5 +1,4 @@
 from .models import Logo, PaySystem, Phone, Copyright, Socical
-
 from .serializers import LogoSerializer, PaySystemSerializer, PhoneSystemSerializer, \
     CopyrightSystemSerializer, SocicalSystemSerializer
 
@@ -20,7 +19,6 @@ def main_page_setup():
         'phone': PhoneSystemSerializer(get_phone, many=True).data,
         'copyright': CopyrightSystemSerializer(get_copyright, many=True).data,
     }
-
     return response_data
 
 

@@ -7,6 +7,7 @@ from goods.models import ProductSku
 class Warehouse(models.Model):
     """"""
     objects = models.Manager()
+    id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=250, blank=True)
     description = models.TextField(max_length=500, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
@@ -27,5 +28,5 @@ class WarehouseAmount(models.Model):
     active = models.BooleanField(default=True, blank=True)
 
     class Meta:
-        unique_together = ('stock', 'product_item_id')
+        unique_together = ('stock', 'product_item')
 
