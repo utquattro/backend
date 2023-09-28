@@ -30,11 +30,12 @@ class CategoryByName(APIView):
         try:
             assert (Cat().check_category_name(category_name))
             products = Goods().get_products_by_category_name(category_name)
-
-            return Response(status=200, data=
-            {category_name: products}
-                            )
-
+            if products:
+                return Response(status=200,data={'category': category_name,
+                                                 'products': products})
+            else:
+                return Response(status=200,data={'category': category_name,
+                                                 'products': 0})
         except AssertionError as e:
             return Response(status=404, data={'error': 'category not found'})
 

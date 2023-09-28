@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categorie, Product, ProductSku
+from .models import Categorie, Product, ProductSku, PropertyName
 
 
 class CategorieSerializer(serializers.ModelSerializer):
@@ -20,10 +20,3 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'category_id', 'title', 'description', 'img_url', 'link_url', 'active',)
 
 
-
-class CustomSerializer(serializers.Serializer):
-    product_id = serializers.CharField(source='table1_field_name')
-    table2_field = serializers.CharField(source='table2_field_name')
-
-    class Meta:
-        fields = ('table1_field', 'table2_field')
