@@ -41,8 +41,8 @@ INSTALLED_APPS = [
 
 
     'goods',
-    'stock',
-    'promotion',
+    'stock'
+,
     'shop_settings',
 
 ]
