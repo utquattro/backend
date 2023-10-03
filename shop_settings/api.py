@@ -62,3 +62,6 @@ def create_test_value():
                             logo_url='images/shop_settings/logo/logo.png',
                             active=True)
     b.save()
+
+
+

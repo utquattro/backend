@@ -1,4 +1,4 @@
-from .models import Categorie, Product, ProductSku
+from .models import Categorie, Product, ProductSku, Property, PropertyValue, PropertyName
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
 
 
@@ -115,3 +115,12 @@ def hz_hz():
     text = 'hello'
     response_data = {'test': text}
     return response_data
+
+
+class AddProperty:
+
+    prop_name = ('Память',  'Цвет', 'Вес', 'Экран')
+
+    def add_property(self):
+        for i in self.prop_name:
+            print(i)

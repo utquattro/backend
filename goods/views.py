@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .api import hz_hz
-from .api import Cat, Goods
+from .api import Cat, Goods, AddProperty
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -59,3 +59,11 @@ class ProductFullInfo(APIView):
                 'error': 'Exception product',
 
             })
+
+
+class AddNewProperty(APIView):
+    d = AddProperty().add_property()
+
+    def get(self, request):
+        return Response(status=200, data={'ok': 's'})
+

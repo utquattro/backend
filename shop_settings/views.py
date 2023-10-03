@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .api import create_test_value, main_page_setup
+
 from shop_settings.models import Copyright, PaySystem, Phone, Logo, Socical
 from rest_framework import viewsets
 from rest_framework.response import Response
