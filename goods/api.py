@@ -119,8 +119,16 @@ def hz_hz():
 
 class AddProperty:
 
-    prop_name = ('Память',  'Цвет', 'Вес', 'Экран')
+    mem_type = (64, 128, 256, 512, 1024, 2048)
+    def add_property(self, p_name):
+        new_prop_id = PropertyName.objects.create(name=p_name[0], active=True)
+        for propery_name in p_name[1]:
+            new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
+            new_val_id = Property.objects.create(property_name=new_prop_id,
+                                                 property_value=new_type_id, active=True)
+            print(propery_name)
+        return print('asdasd:', new_val_id.id)
+           # print(new_prop_id.id)
+            # for p_type in self.mem_type:
+            #     new_prop_id = PropertyName.objects.create(name=p_name, active=True)
 
-    def add_property(self):
-        for i in self.prop_name:
-            print(i)

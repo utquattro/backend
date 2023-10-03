@@ -58,7 +58,7 @@ class ProductConfigAdmin(admin.ModelAdmin):
 class PropertyAdmin(admin.ModelAdmin):
     """"""
     list_display = (
-        'id', 'category', 'property_name', 'property_value',
+        'id', 'property_name', 'property_value',
         'create_date', 'active')
     list_display_links = ('id',)
     search_fields = ('id', )

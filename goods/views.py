@@ -62,8 +62,15 @@ class ProductFullInfo(APIView):
 
 
 class AddNewProperty(APIView):
-    d = AddProperty().add_property()
 
     def get(self, request):
+        memory = ['RAM', [64, 128, 256, 512, 1024, 2048]]
+        color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red']]
+        display = ['Display', ['IPS', 'LED', 'AMOLED',]]
+        internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
+        AddProperty().add_property(memory)
+        AddProperty().add_property(color)
+        AddProperty().add_property(display)
+        AddProperty().add_property(internet)
         return Response(status=200, data={'ok': 's'})
 

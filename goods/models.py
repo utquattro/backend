@@ -59,6 +59,8 @@ class PropertyName(models.Model):
         return self.name
 
 
+
+
 class PropertyValue(models.Model):
     """"""
     objects = models.Manager()
@@ -75,7 +77,6 @@ class Property(models.Model):
     """"""
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
-    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, null=True)
     property_name = models.ForeignKey(PropertyName, on_delete=models.CASCADE, null=True)
     property_value = models.ForeignKey(PropertyValue, on_delete=models.CASCADE, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
@@ -85,7 +86,7 @@ class Property(models.Model):
         return str(self.property_value)
 
     class Meta:
-        unique_together = ('category', 'property_name', 'property_value')
+        unique_together = ('property_name', 'property_value')
 
 
 class ProductSku(models.Model):
@@ -115,4 +116,17 @@ class ProductConfig(models.Model):
 
     class Meta:
         unique_together = ('product_property', 'product_item')
+
+
+class CategoryPropertyConfig(models.Model):
+    """"""
+    objects = models.Manager()
+    id = models.AutoField(primary_key=True)
+    product_property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, null=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    class Meta:
+        unique_together = ('product_property', 'category')
 
