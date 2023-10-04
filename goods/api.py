@@ -2,7 +2,6 @@ from .models import Categorie, Product, ProductSku, Property, PropertyValue, Pro
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
 
 
-
 class Cat:
 
     def __init__(self):
@@ -42,7 +41,6 @@ class Goods:
             return True
         except Exception as e:
             return False
-
 
     def get_product_id_by_name(self, product_name):
         product = self.active_products.filter(link_url=product_name)
@@ -111,33 +109,29 @@ class Sku:
         else:
             return None
 
+
 def hz_hz():
     text = 'hello'
     response_data = {'test': text}
     return response_data
 
 
+def add_property(p_name):
+    new_propery_list = []
+    new_propoperty = PropertyName.objects.create(name=p_name[0], active=True)
+    for propery_name in p_name[1]:
+        new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
+        new_val_id = Property.objects.create(property_name=new_propoperty,
+                                             property_value=new_type_id, active=True)
+        new_propery_list.append(new_type_id.id)
+    return new_propoperty.id
+
+
+def add_property_to_category(category_id, property_name_id):
+    new_cat_prop_id = CategoryPropertyConfig.objects.create(category_id=category_id,
+                                                            property_name_id=property_name_id, active=True)
+    return new_cat_prop_id.id
+
+
 class AddProperty:
-
-    def add_property(self, p_name):
-        new_propery_list = []
-        new_prop_id = PropertyName.objects.create(name=p_name[0], active=True)
-        for propery_name in p_name[1]:
-            new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
-            new_val_id = Property.objects.create(property_name=new_prop_id,
-                                                 property_value=new_type_id, active=True)
-            new_propery_list.append(new_val_id.id)
-        return new_propery_list
-
-    def add_property_to_category(self, category_id, property_id):
-        new_cat_propery_list = []
-        print('categorY id', category_id)
-        print('property_id id', property_id)
-        for prop_id in property_id:
-            print('prop_id id', prop_id)
-            print('category id', category_id)
-            new_cat_prop_id = CategoryPropertyConfig.objects.create(category=category_id,
-                                                                    product_property=prop_id, active=True)
-            new_cat_propery_list.append(new_cat_prop_id)
-        return new_cat_propery_list
-
+    pass

@@ -41,9 +41,6 @@ class ProductItemAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active',)
 
-
-
-
 class ProductConfigAdmin(admin.ModelAdmin):
     """"""
     list_display = (
@@ -65,15 +62,17 @@ class PropertyAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active',)
 
+
 class CategoryPropertyConfigAdmin(admin.ModelAdmin):
     """"""
     list_display = (
-        'id', 'product_property', 'category',
+        'id', 'property_name', 'category',
         'create_date', 'active')
     list_display_links = ('id',)
     search_fields = ('id', )
     list_editable = ('active',)
     list_filter = ('active',)
+
 
 admin.site.register(Categorie, CategorieAdmin)
 admin.site.register(Product, ProductAdmin)

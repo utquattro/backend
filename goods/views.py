@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .api import hz_hz
-from .api import Cat, Goods, AddProperty
+from .api import hz_hz, add_property, add_property_to_category
+from .api import Cat, Goods
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -65,16 +65,21 @@ class AddNewProperty(APIView):
 
     def get(self, request):
         memory = ['RAM', [64, 128, 256, 512, 1024, 2048]]
-        color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red']]
+        color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red', 'Black']]
         display = ['Display', ['IPS', 'LED', 'AMOLED',]]
         internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
-        d1 = AddProperty().add_property(memory)
-        d2 = AddProperty().add_property(color)
-        d3 = AddProperty().add_property(display)
-        d4 = AddProperty().add_property(internet)
-        AddProperty().add_property_to_category(category_id='1', property_id=d1)
-        AddProperty().add_property_to_category(category_id='1', property_id=d2)
-        AddProperty().add_property_to_category(category_id='1', property_id=d3)
-        AddProperty().add_property_to_category(category_id='1', property_id=d4)
+        brand = ['Brand', ['Acer', 'Asus', 'Apple', 'HP']]
+        d1 = add_property(memory)
+        d2 = add_property(display)
+        d3 = add_property(internet)
+        d4 = add_property(color)
+        d5 = add_property(brand)
+        print(d1)
+        add_property_to_category(category_id=1, property_name_id=d1)
+        add_property_to_category(category_id=1, property_name_id=d2)
+        add_property_to_category(category_id=1, property_name_id=d3)
+        add_property_to_category(category_id=2, property_name_id=d4)
+        add_property_to_category(category_id=1, property_name_id=d5)
+        add_property_to_category(category_id=2, property_name_id=d5)
         return Response(status=200, data={'ok': 's'})
 

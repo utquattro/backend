@@ -122,11 +122,11 @@ class CategoryPropertyConfig(models.Model):
     """"""
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
-    product_property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True)
+    property_name = models.ForeignKey(PropertyName, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True, blank=True)
 
     class Meta:
-        unique_together = ('product_property', 'category')
+        unique_together = ('property_name', 'category')
 
