@@ -68,9 +68,13 @@ class AddNewProperty(APIView):
         color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red']]
         display = ['Display', ['IPS', 'LED', 'AMOLED',]]
         internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
-        AddProperty().add_property(memory)
-        AddProperty().add_property(color)
-        AddProperty().add_property(display)
-        AddProperty().add_property(internet)
+        d1 = AddProperty().add_property(memory)
+        d2 = AddProperty().add_property(color)
+        d3 = AddProperty().add_property(display)
+        d4 = AddProperty().add_property(internet)
+        AddProperty().add_property_to_category(category_id='1', property_id=d1)
+        AddProperty().add_property_to_category(category_id='1', property_id=d2)
+        AddProperty().add_property_to_category(category_id='1', property_id=d3)
+        AddProperty().add_property_to_category(category_id='1', property_id=d4)
         return Response(status=200, data={'ok': 's'})
 

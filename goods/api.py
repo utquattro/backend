@@ -1,4 +1,4 @@
-from .models import Categorie, Product, ProductSku, Property, PropertyValue, PropertyName
+from .models import Categorie, Product, ProductSku, Property, PropertyValue, PropertyName, CategoryPropertyConfig
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
 
 
@@ -119,16 +119,25 @@ def hz_hz():
 
 class AddProperty:
 
-    mem_type = (64, 128, 256, 512, 1024, 2048)
     def add_property(self, p_name):
+        new_propery_list = []
         new_prop_id = PropertyName.objects.create(name=p_name[0], active=True)
         for propery_name in p_name[1]:
             new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
             new_val_id = Property.objects.create(property_name=new_prop_id,
                                                  property_value=new_type_id, active=True)
-            print(propery_name)
-        return print('asdasd:', new_val_id.id)
-           # print(new_prop_id.id)
-            # for p_type in self.mem_type:
-            #     new_prop_id = PropertyName.objects.create(name=p_name, active=True)
+            new_propery_list.append(new_val_id.id)
+        return new_propery_list
+
+    def add_property_to_category(self, category_id, property_id):
+        new_cat_propery_list = []
+        print('categorY id', category_id)
+        print('property_id id', property_id)
+        for prop_id in property_id:
+            print('prop_id id', prop_id)
+            print('category id', category_id)
+            new_cat_prop_id = CategoryPropertyConfig.objects.create(category=category_id,
+                                                                    product_property=prop_id, active=True)
+            new_cat_propery_list.append(new_cat_prop_id)
+        return new_cat_propery_list
 

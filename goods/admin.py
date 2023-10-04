@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Categorie, Product, ProductSku, Property, ProductConfig, \
-    PropertyValue, PropertyName
+    PropertyValue, PropertyName, CategoryPropertyConfig
 
 
 class CategorieAdmin(admin.ModelAdmin):
@@ -65,7 +65,15 @@ class PropertyAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active',)
 
-
+class CategoryPropertyConfigAdmin(admin.ModelAdmin):
+    """"""
+    list_display = (
+        'id', 'product_property', 'category',
+        'create_date', 'active')
+    list_display_links = ('id',)
+    search_fields = ('id', )
+    list_editable = ('active',)
+    list_filter = ('active',)
 
 admin.site.register(Categorie, CategorieAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -73,7 +81,7 @@ admin.site.register(ProductSku, ProductItemAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(ProductConfig, ProductConfigAdmin)
 
-
+admin.site.register(CategoryPropertyConfig, CategoryPropertyConfigAdmin)
 
 admin.site.register(PropertyName)
 admin.site.register(PropertyValue)

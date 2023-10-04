@@ -83,7 +83,7 @@ class Property(models.Model):
     active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
-        return str(self.property_value)
+        return str(self.id) + " " + str(self.property_name) + " " + str(self.property_value)
 
     class Meta:
         unique_together = ('property_name', 'property_value')
