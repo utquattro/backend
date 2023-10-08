@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .api import hz_hz, add_property, add_property_to_category
-from .api import Cat, Goods, Attr
+from .api import hz_hz
+from .api import Cat, Goods
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -62,56 +62,56 @@ class ProductFullInfo(APIView):
             })
 
 
-class Attributs(APIView):
-    # def get(self, request, prop_id):
-    #     try:
-    #         product_full_info = Attr().get_propertry_by_id(prop_id)
-    #         if product_full_info:
-    #             return Response(product_full_info)
-    #         else:
-    #             return Response(status=404, data={
-    #                 'error': 'attr not found',
-    #
-    #             })
-    #     except Exception as e:
-    #         print(e)
-    #         return Response(status=404, data={
-    #             'error': 'Exception product',
-    #
-    #         })
-    def get(self, request):
-        try:
-            obj = Attr()
-            print("obj", obj)
-            all_attr = obj.get_active_propertry()
-            print("all_attr", all_attr)
-            #assert all_attr
-            return Response({
-                'prop': all_attr
-            })
+# class Attributs(APIView):
+#     # def get(self, request, prop_id):
+#     #     try:
+#     #         product_full_info = Attr().get_propertry_by_id(prop_id)
+#     #         if product_full_info:
+#     #             return Response(product_full_info)
+#     #         else:
+#     #             return Response(status=404, data={
+#     #                 'error': 'attr not found',
+#     #
+#     #             })
+#     #     except Exception as e:
+#     #         print(e)
+#     #         return Response(status=404, data={
+#     #             'error': 'Exception product',
+#     #
+#     #         })
+#     def get(self, request):
+#         try:
+#             obj = Attr()
+#             print("obj", obj)
+#             all_attr = obj.get_active_propertry()
+#             print("all_attr", all_attr)
+#             #assert all_attr
+#             return Response({
+#                 'prop': all_attr
+#             })
+#
+#         except AssertionError as e:
+#             return Response(status=404, data={'error': 'active category not found'})
 
-        except AssertionError as e:
-            return Response(status=404, data={'error': 'active category not found'})
 
-
-class AddNewProperty(APIView):
-
-    def get(self, request):
-        memory = ['RAM', [64, 128, 256, 512, 1024, 2048]]
-        color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red', 'Black']]
-        display = ['Display', ['IPS', 'LED', 'AMOLED', ]]
-        internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
-        brand = ['Brand', ['Acer', 'Asus', 'Apple', 'HP']]
-        d1 = add_property(memory)
-        d2 = add_property(display)
-        d3 = add_property(internet)
-        d4 = add_property(color)
-        d5 = add_property(brand)
-        print(d1)
-        add_property_to_category(category_id=1, property_name_id=d1)
-        add_property_to_category(category_id=1, property_name_id=d2)
-        add_property_to_category(category_id=1, property_name_id=d3)
-        add_property_to_category(category_id=2, property_name_id=d4)
-        add_property_to_category(category_id=1, property_name_id=d5)
-        add_property_to_category(category_id=2, property_name_id=d5)
-        return Response(status=200, data={'ok': 's'})
+# class AddNewProperty(APIView):
+#
+#     def get(self, request):
+#         memory = ['RAM', [64, 128, 256, 512, 1024, 2048]]
+#         color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red', 'Black']]
+#         display = ['Display', ['IPS', 'LED', 'AMOLED', ]]
+#         internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
+#         brand = ['Brand', ['Acer', 'Asus', 'Apple', 'HP']]
+#         d1 = add_property(memory)
+#         d2 = add_property(display)
+#         d3 = add_property(internet)
+#         d4 = add_property(color)
+#         d5 = add_property(brand)
+#         print(d1)
+#         add_property_to_category(category_id=1, property_name_id=d1)
+#         add_property_to_category(category_id=1, property_name_id=d2)
+#         add_property_to_category(category_id=1, property_name_id=d3)
+#         add_property_to_category(category_id=2, property_name_id=d4)
+#         add_property_to_category(category_id=1, property_name_id=d5)
+#         add_property_to_category(category_id=2, property_name_id=d5)
+#         return Response(status=200, data={'ok': 's'})

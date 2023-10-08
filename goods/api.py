@@ -1,5 +1,5 @@
-from .models import Categorie, Product, ProductSku, Property, PropertyValue, PropertyName, CategoryPropertyConfig
-from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, PropertySerializer
+from .models import Categorie, Product, ProductSku
+from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
 
 
 class Cat:
@@ -113,31 +113,19 @@ def hz_hz():
     return response_data
 
 
-def add_property(p_name):
-    new_propery_list = []
-    new_propoperty = PropertyName.objects.create(name=p_name[0], active=True)
-    for propery_name in p_name[1]:
-        new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
-        new_val_id = Property.objects.create(property_name=new_propoperty,
-                                             property_value=new_type_id, active=True)
-        new_propery_list.append(new_type_id.id)
-    return new_propoperty.id
+# def add_property(p_name):
+#     new_propery_list = []
+#     new_propoperty = PropertyName.objects.create(name=p_name[0], active=True)
+#     for propery_name in p_name[1]:
+#         new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
+#         new_val_id = Property.objects.create(property_name=new_propoperty,
+#                                              property_value=new_type_id, active=True)
+#         new_propery_list.append(new_type_id.id)
+#     return new_propoperty.id
+#
+#
+# def add_property_to_category(category_id, property_name_id):
+#     new_cat_prop_id = CategoryPropertyConfig.objects.create(category_id=category_id,
+#                                                             property_name_id=property_name_id, active=True)
+#     return new_cat_prop_id.id
 
-
-def add_property_to_category(category_id, property_name_id):
-    new_cat_prop_id = CategoryPropertyConfig.objects.create(category_id=category_id,
-                                                            property_name_id=property_name_id, active=True)
-    return new_cat_prop_id.id
-
-
-class Attr:
-    def __init__(self):
-        self.active_property = Property.objects.filter(active=True)
-
-    def get_property_by_id(self, product_name):
-        product = self.active_property.filter(id=product_name)
-        if product:
-            response_data = ProductSerializer(product, many=True).data
-            return response_data
-        else:
-            return False

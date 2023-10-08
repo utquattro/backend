@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categorie, Product, ProductSku, PropertyName, Property
+from .models import Categorie, Product, ProductSku
 
 
 class CategorieSerializer(serializers.ModelSerializer):
@@ -19,11 +19,3 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'category_id', 'title', 'description', 'img_url', 'link_url', 'active',)
 
-
-class PropertySerializer(serializers.ModelSerializer):
-    pr_name = serializers.StringRelatedField(many=True)
-    pr_val = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        model = Property
-        fields = '__all__'

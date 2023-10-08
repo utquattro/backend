@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Categorie, Product, ProductSku, Property, ProductConfig, \
-    PropertyValue, PropertyName, CategoryPropertyConfig
+from .models import Categorie, Product, ProductSku
 
 
 class CategorieAdmin(admin.ModelAdmin):
@@ -41,46 +40,9 @@ class ProductItemAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active',)
 
-class ProductConfigAdmin(admin.ModelAdmin):
-    """"""
-    list_display = (
-        'id', 'product_property', 'product_item',
-        'create_date', 'active')
-    list_display_links = ('id',)
-    search_fields = ('id', )
-    list_editable = ('active',)
-    list_filter = ('active',)
-
-
-class PropertyAdmin(admin.ModelAdmin):
-    """"""
-    list_display = (
-        'id', 'property_name', 'property_value',
-        'create_date', 'active')
-    list_display_links = ('id',)
-    search_fields = ('id', )
-    list_editable = ('active',)
-    list_filter = ('active',)
-
-
-class CategoryPropertyConfigAdmin(admin.ModelAdmin):
-    """"""
-    list_display = (
-        'id', 'property_name', 'category',
-        'create_date', 'active')
-    list_display_links = ('id',)
-    search_fields = ('id', )
-    list_editable = ('active',)
-    list_filter = ('active',)
-
 
 admin.site.register(Categorie, CategorieAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductSku, ProductItemAdmin)
-admin.site.register(Property, PropertyAdmin)
-admin.site.register(ProductConfig, ProductConfigAdmin)
 
-admin.site.register(CategoryPropertyConfig, CategoryPropertyConfigAdmin)
 
-admin.site.register(PropertyName)
-admin.site.register(PropertyValue)
