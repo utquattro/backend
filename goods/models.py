@@ -3,7 +3,46 @@ from e_shop.services import translate_text
 from django.core.validators import MinValueValidator
 
 
-# Create your models here.
+class PropertyName(models.Model):
+    """"""
+    objects = models.Manager()
+    id = models.AutoField(primary_key=True)
+    name = models.TextField(max_length=500, blank=False)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class PropertyValue(models.Model):
+    """"""
+    objects = models.Manager()
+    id = models.AutoField(primary_key=True)
+    value = models.TextField(max_length=500, blank=False)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    def __str__(self):
+        return self.value
+
+
+class Property(models.Model):
+    """"""
+    objects = models.Manager()
+    id = models.AutoField(primary_key=True)
+    property_name = models.ForeignKey(PropertyName, related_name='pr_name',  on_delete=models.CASCADE, null=True)
+    property_value = models.ForeignKey(PropertyValue, related_name='pr_val',  on_delete=models.CASCADE, null=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    def __str__(self):
+        return str(self.id) + " " + str(self.property_name) + " " + str(self.property_value)
+
+    class Meta:
+        unique_together = ('property_name', 'property_value')
+
+
 class Categorie(models.Model):
     """"""
     objects = models.Manager()
@@ -47,48 +86,6 @@ class Product(models.Model):
         return self.title
 
 
-class PropertyName(models.Model):
-    """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
-    name = models.TextField(max_length=500, blank=False)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-
-
-class PropertyValue(models.Model):
-    """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
-    value = models.TextField(max_length=500, blank=False)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return self.value
-
-
-class Property(models.Model):
-    """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
-    property_name = models.ForeignKey(PropertyName, on_delete=models.CASCADE, null=True)
-    property_value = models.ForeignKey(PropertyValue, on_delete=models.CASCADE, null=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return str(self.id) + " " + str(self.property_name) + " " + str(self.property_value)
-
-    class Meta:
-        unique_together = ('property_name', 'property_value')
-
-
 class ProductSku(models.Model):
     """"""
     objects = models.Manager()
@@ -122,7 +119,7 @@ class CategoryPropertyConfig(models.Model):
     """"""
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
-    property_name = models.ForeignKey(PropertyName, on_delete=models.CASCADE, null=True)
+    property_name = models.ForeignKey(PropertyName, related_name='prop',  on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True, blank=True)

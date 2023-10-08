@@ -1,5 +1,5 @@
 from .models import Categorie, Product, ProductSku, Property, PropertyValue, PropertyName, CategoryPropertyConfig
-from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
+from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, PropertySerializer
 
 
 class Cat:
@@ -58,6 +58,21 @@ class Goods:
         else:
             return False
 
+    def get_product_full_info_by_name(self, product_name):
+        try:
+            product = self.get_product_by_name(product_name)
+
+            product_id = product[0]['id']
+            sku = Sku().get_sku_by_product_id(product_id)
+            product[0]['sku'] = sku
+            response_data = {product_name: product}
+            if product:
+                return response_data
+            else:
+                return False
+        except Exception as e:
+            return type(e)
+
     def get_products_by_category_name(self, category_name):
         try:
             category_id = Cat().get_category_id_by_name(category_name)
@@ -70,24 +85,6 @@ class Goods:
         except Exception as e:
             print('exp!!')
             return e
-
-    def get_product_full_info_by_name(self, product_name):
-        try:
-            product = self.get_product_by_name(product_name)
-
-            product_id = product[0]['id']
-            sku = Sku().get_sku_by_product_id(product_id)
-            product[0]['sku'] = sku
-            response_data = {product_name: product}
-            if product:
-
-                return response_data
-            else:
-                return False
-        except Exception as e:
-            return type(e)
-
-
 class Sku:
 
     def __init__(self):
@@ -133,5 +130,14 @@ def add_property_to_category(category_id, property_name_id):
     return new_cat_prop_id.id
 
 
-class AddProperty:
-    pass
+class Attr:
+    def __init__(self):
+        self.active_property = Property.objects.filter(active=True)
+
+    def get_property_by_id(self, product_name):
+        product = self.active_property.filter(id=product_name)
+        if product:
+            response_data = ProductSerializer(product, many=True).data
+            return response_data
+        else:
+            return False

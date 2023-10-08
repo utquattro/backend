@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Categorie, Product, ProductSku, PropertyName
+from .models import Categorie, Product, ProductSku, PropertyName, Property
 
 
 class CategorieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorie
-        fields = ('id', 'category_name', 'title', 'description', 'img_url', 'link_url', 'active',)
+        fields = ('id', 'category_name', 'title', 'description', 'img_url', 'link_url', 'active', )
 
 
 class ProductSkuSerializer(serializers.ModelSerializer):
@@ -20,3 +20,10 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'category_id', 'title', 'description', 'img_url', 'link_url', 'active',)
 
 
+class PropertySerializer(serializers.ModelSerializer):
+    pr_name = serializers.StringRelatedField(many=True)
+    pr_val = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Property
+        fields = '__all__'
