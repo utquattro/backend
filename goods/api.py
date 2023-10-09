@@ -1,5 +1,18 @@
-from .models import Categorie, Product, ProductSku
-from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer
+from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic
+from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
+    CharacteristicValueSerializer
+
+
+class Attributes:
+    def __init__(self):
+        self.active_characteristic = Characteristic.objects.filter(active=True)
+
+    def get_active_characteristic(self):
+        try:
+            response_data = CharacteristicSerializer(self.active_characteristic, many=True).data
+            return response_data
+        except Exception as e:
+            return None, e
 
 
 class Cat:
@@ -85,6 +98,8 @@ class Goods:
         except Exception as e:
             print('exp!!')
             return e
+
+
 class Sku:
 
     def __init__(self):
@@ -112,7 +127,6 @@ def hz_hz():
     response_data = {'test': text}
     return response_data
 
-
 # def add_property(p_name):
 #     new_propery_list = []
 #     new_propoperty = PropertyName.objects.create(name=p_name[0], active=True)
@@ -128,4 +142,3 @@ def hz_hz():
 #     new_cat_prop_id = CategoryPropertyConfig.objects.create(category_id=category_id,
 #                                                             property_name_id=property_name_id, active=True)
 #     return new_cat_prop_id.id
-

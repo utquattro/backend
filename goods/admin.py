@@ -1,5 +1,16 @@
 from django.contrib import admin
-from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic
+from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
+
+
+class BrandAdmin(admin.ModelAdmin):
+    """"""
+    list_display = (
+        'id', 'name',
+        'description', 'img_url',
+        'create_date', 'active')
+    list_display_links = ('id',)
+    list_editable = ('active',)
+    list_filter = ('active',)
 
 
 class CharacteristicValueAdmin(admin.ModelAdmin):
@@ -56,3 +67,5 @@ admin.site.register(ProductSku, ProductItemAdmin)
 
 admin.site.register(CharacteristicValue, CharacteristicValueAdmin)
 admin.site.register(Characteristic, CharacteristicValueAdmin)
+
+admin.site.register(Brand, BrandAdmin)

@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from .api import hz_hz
-from .api import Cat, Goods
+from .api import Cat, Goods, Attributes
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from .serializers import CharacteristicValueSerializer, CharacteristicSerializer
 
 # Create your views here.
 class MainPageSetup(viewsets.ViewSet):
@@ -14,11 +14,14 @@ class MainPageSetup(viewsets.ViewSet):
 class CategoryAll(APIView):
     def get(self, request):
         try:
+            att = Attributes().get_active_characteristic()
+            print(att)
             obj = Cat()
             all_category = obj.get_active_category()
             assert all_category
             return Response({
-                'active category': all_category
+                'active category': all_category,
+                'attr': att,
             })
 
         except AssertionError as e:
@@ -62,7 +65,7 @@ class ProductFullInfo(APIView):
             })
 
 
-# class Attributs(APIView):
+# class Asdas(APIView):
 #     # def get(self, request, prop_id):
 #     #     try:
 #     #         product_full_info = Attr().get_propertry_by_id(prop_id)
