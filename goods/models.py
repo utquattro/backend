@@ -3,6 +3,28 @@ from e_shop.services import translate_text
 from django.core.validators import MinValueValidator
 
 
+class CharacteristicValue(models.Model):
+    value = models.CharField(max_length=50)
+    description = models.TextField(max_length=500, blank=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    def __str__(self):
+        return self.value
+
+
+class Characteristic(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    values = models.ManyToManyField(CharacteristicValue)
+    description = models.TextField(max_length=500, blank=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+
 class Categorie(models.Model):
     """"""
     objects = models.Manager()
