@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from .api import hz_hz
-from .api import Cat, Goods, Attributes
+from .api import Cat, Goods, Attributes, Sku
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CharacteristicValueSerializer, CharacteristicSerializer
+
 
 # Create your views here.
 class MainPageSetup(viewsets.ViewSet):
@@ -50,7 +50,7 @@ class ProductFullInfo(APIView):
             valid_product_name = Goods().check_category_name(product_name)
             valid_category_name = Cat().check_category_name(category_name)
             if valid_product_name & valid_category_name:
-                product_full_info = Goods().get_product_full_info_by_name(product_name)
+                product_full_info = Goods().get_product_by_name(product_name)
                 return Response(product_full_info)
             else:
                 return Response(status=404, data={

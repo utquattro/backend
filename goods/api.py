@@ -67,6 +67,7 @@ class Goods:
         product = self.active_products.filter(link_url=product_name)
         if product:
             response_data = ProductSerializer(product, many=True).data
+            print(response_data)
             return response_data
         else:
             return False
@@ -76,8 +77,6 @@ class Goods:
             product = self.get_product_by_name(product_name)
 
             product_id = product[0]['id']
-            sku = Sku().get_sku_by_product_id(product_id)
-            product[0]['sku'] = sku
             response_data = {product_name: product}
             if product:
                 return response_data
@@ -112,8 +111,10 @@ class Sku:
         except Exception as e:
             return False
 
-    def get_sku_by_product_id(self, product_id):
-        product = self.active_sku.filter(product=product_id)
+    def get_sku_by_product_id(self, product_name):
+        get_sku = Goods().get_product_id_by_name(product_name)
+        print('gg', get_sku)
+        product = self.active_sku.filter(product=get_sku)
         if product:
             response_data = ProductSkuSerializer(product, many=True).data
             print('jj: ', response_data)
