@@ -4,13 +4,7 @@ from .models import Categorie, Product, ProductSku, CharacteristicValue, Charact
 
 class BrandAdmin(admin.ModelAdmin):
     """"""
-    list_display = (
-        'id', 'name',
-        'description', 'img_url',
-        'create_date', 'active')
-    list_display_links = ('id',)
-    list_editable = ('active',)
-    list_filter = ('active',)
+    pass
 
 
 class CharacteristicValueAdmin(admin.ModelAdmin):
@@ -22,17 +16,11 @@ class CharacteristicsValueAdmin(admin.ModelAdmin):
     """"""
     pass
 
+
 class CategorieAdmin(admin.ModelAdmin):
     """"""
-    list_display = (
-        'id', 'category_name', 'title',
-        'description', 'img_url', 'link_url',
-        'create_date', 'active')
-    list_display_links = ('id', 'title')
-    search_fields = ('id', 'category_name', 'title', 'description')
-    list_editable = ('active',)
-    list_filter = ('active',)
-    exclude = ['link_url', 'category_name']
+    prepopulated_fields = {"slug": ("name", )}
+
 
 
 class ProductAdmin(admin.ModelAdmin):

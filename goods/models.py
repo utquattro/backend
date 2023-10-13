@@ -3,109 +3,90 @@ from e_shop.services import translate_text
 from django.core.validators import MinValueValidator
 
 
-class CharacteristicValue(models.Model):
+class ActiveManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(active=True)
+
+
+class InactiveManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(active=False)
+
+
+class BaseModel(models.Model):
+    """
+    Used in all the models as base
+    """
+    description = models.CharField(max_length=500, blank=True, verbose_name='Описание')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True,
+                                 blank=True,
+                                 help_text='If this object is active')
+    active_objects = ActiveManager()
+    inactive_objects = InactiveManager()
     objects = models.Manager()
+
+    class Meta:
+        abstract = True
+
+
+class CharacteristicValue(BaseModel):
     value = models.CharField(max_length=50, verbose_name='Значение')
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return self.value
 
 
-class Characteristic(models.Model):
-    objects = models.Manager()
+class Characteristic(BaseModel):
     name = models.CharField(max_length=30, unique=True, verbose_name='Название')
     values = models.ManyToManyField(CharacteristicValue, verbose_name='Значение')
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Brand(models.Model):
-    objects = models.Manager()
+class Brand(BaseModel):
     name = models.CharField(max_length=50, verbose_name='Название')
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
-    img_url = models.ImageField(blank=True, upload_to='images/goods/brands', verbose_name='Лого бренда' )
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
+    img_url = models.ImageField(blank=True, upload_to='images/goods/brands', verbose_name='Лого бренда')
 
     def __str__(self):
         return self.name
 
 
-class Categorie(models.Model):
+class Categorie(BaseModel):
     """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
-    category_name = models.TextField(max_length=250, blank=False, default='1', verbose_name='Категория')
-    title = models.TextField(max_length=250, blank=False)
+
+    name = models.TextField(max_length=250, blank=False, verbose_name='Название')
     characteristics = models.ManyToManyField(Characteristic, verbose_name='Фильтр')
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
-    img_url = models.ImageField(blank=True, upload_to='images/goods/categories',)
-    link_url = models.TextField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.category_name = f"{translate_text(str(self.title))}"
-        self.link_url = f"{self.category_name}"
-        super().save(*args, **kwargs)
-
+    img_url = models.ImageField(blank=True, upload_to='images/goods/categories', )
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     def __str__(self):
-        return self.title
+        return self.name
 
 
-class ProductSku(models.Model):
+class ProductSku(BaseModel):
     """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
     sku = models.TextField(max_length=100, blank=True, null=True, unique=True, verbose_name='Артикул')
+
     characteristics = models.ManyToManyField(CharacteristicValue, verbose_name='Характеристики')
     price = models.PositiveIntegerField(blank=True,
                                         null=True,
                                         validators=[MinValueValidator(1)],
                                         verbose_name='Цена')
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return self.sku
 
 
-class Product(models.Model):
+class Product(BaseModel):
     """"""
-    objects = models.Manager()
-    id = models.AutoField(primary_key=True)
+    name = models.TextField(max_length=250, blank=False, verbose_name='Название')
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд')
     skus = models.ManyToManyField(ProductSku, verbose_name='Артикулы')
-    name = models.TextField(max_length=250, blank=True, default='1')
-    title = models.TextField(max_length=250, blank=False)
-    description = models.TextField(max_length=500, blank=True, verbose_name='Описание')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
-    link_url = models.TextField(blank=True, null=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.name = f"{translate_text(str(self.title))}"
-        self.link_url = f"{self.name}"
-        super().save(*args, **kwargs)
-
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     def __str__(self):
-        return self.title
-
-
-
-
-
-
-
-
+        return self.name

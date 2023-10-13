@@ -16,7 +16,6 @@ class Attributes:
 
 
 class Cat:
-
     def __init__(self):
         self.active_category = Categorie.objects.filter(active=True)
 
