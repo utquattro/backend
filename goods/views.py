@@ -1,9 +1,31 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from .api import hz_hz
-from .api import Cat, Goods, Attributes, Sku
+from .api import Cat, Goods, Attributes, Brands
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .models import Categorie
+from .serializers import CategorieSerializer
 
+
+class BrandAll(APIView):
+    def get(self, request):
+        try:
+
+            obj = Brands()
+            all_brand = obj.get_all_brands()
+            assert all_brand
+            return Response({'brand': all_brand})
+        except AssertionError as e:
+            return Response(status=404, data={'error': 'brand not found'})
+
+
+def show_post(request, post_slug):
+    post = get_object_or_404(Categorie, slug=post_slug)
+    context = {
+        'post': post,
+    }
+    return post
 
 # Create your views here.
 class MainPageSetup(viewsets.ViewSet):
@@ -47,16 +69,19 @@ class CategoryByName(APIView):
 class ProductFullInfo(APIView):
     def get(self, request, product_name, category_name):
         try:
-            valid_product_name = Goods().check_category_name(product_name)
-            valid_category_name = Cat().check_category_name(category_name)
-            if valid_product_name & valid_category_name:
-                product_full_info = Goods().get_product_by_name(product_name)
-                return Response(product_full_info)
-            else:
-                return Response(status=404, data={
-                    'error': 'product not found',
+            if Cat().check_category_name(category_name):
+                if Goods().check_category_name(product_name):
+                    product_full_info = Goods().get_product_by_name(product_name)
+                    return Response(product_full_info)
+                else:
+                    return Response(status=404, data={
+                        'error': 'product not found',
 
-                })
+                    })
+            return Response(status=404, data={
+                        'error': 'category not found',
+
+                    })
         except Exception as e:
             print(e)
             return Response(status=404, data={

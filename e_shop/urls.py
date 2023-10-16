@@ -19,12 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from shop_settings import views
-from goods.views import CategoryByName, CategoryAll, ProductFullInfo
+from goods.views import CategoryByName, CategoryAll, ProductFullInfo, show_post, BrandAll
 from stock.views import StockAmountBySku
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('category/', CategoryAll.as_view()),
-                  path('category/<str:category_name>/', CategoryByName.as_view()),
+                  path('brand/', BrandAll.as_view()),
+            #path('category/<str:category_name>/', CategoryByName.as_view()),
+                  path('category/<slug:post_slug>/', show_post, name='category_detail'),
                   path('category/<str:category_name>/<str:product_name>/', ProductFullInfo.as_view()),
                   path('stock/<str:product_sku_id>/', StockAmountBySku.as_view()),
                   path('shop_settings/', include('shop_settings.urls')),

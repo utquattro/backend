@@ -1,6 +1,6 @@
-from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic
+from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
-    CharacteristicValueSerializer
+    CharacteristicValueSerializer, BrandSerializer
 
 
 class Attributes:
@@ -13,6 +13,19 @@ class Attributes:
             return response_data
         except Exception as e:
             return None, e
+
+
+class Brands:
+    def __init__(self):
+        self.active_brand = Brand.active_objects.all()
+
+    def get_all_brands(self):
+        try:
+            response_data = BrandSerializer(self.active_brand, many=True).data
+            return response_data
+        except Exception as e:
+            return None, e
+
 
 
 class Cat:
@@ -36,7 +49,7 @@ class Cat:
 
     def check_category_name(self, category_name):
         try:
-            self.active_category.get(link_url=category_name)
+            self.active_category.get(slug=category_name)
             return True
         except Exception as e:
             return False

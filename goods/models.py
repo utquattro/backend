@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from e_shop.services import translate_text
 from django.core.validators import MinValueValidator
 
@@ -17,15 +19,14 @@ class BaseModel(models.Model):
     """
     Used in all the models as base
     """
-    description = models.CharField(max_length=500, blank=True, verbose_name='Описание')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True,
                                  blank=True,
                                  help_text='If this object is active')
+    objects = models.Manager()
     active_objects = ActiveManager()
     inactive_objects = InactiveManager()
-    objects = models.Manager()
 
     class Meta:
         abstract = True
@@ -47,7 +48,8 @@ class Characteristic(BaseModel):
 
 
 class Brand(BaseModel):
-    name = models.CharField(max_length=50, verbose_name='Название')
+    name = models.CharField(max_length=50, unique=True, verbose_name='Название бренда')
+    description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание бренда')
     img_url = models.ImageField(blank=True, upload_to='images/goods/brands', verbose_name='Лого бренда')
 
     def __str__(self):
@@ -57,13 +59,16 @@ class Brand(BaseModel):
 class Categorie(BaseModel):
     """"""
 
-    name = models.TextField(max_length=250, blank=False, verbose_name='Название')
+    name = models.TextField(max_length=250, blank=False, verbose_name='Название категории')
     characteristics = models.ManyToManyField(Characteristic, verbose_name='Фильтр')
     img_url = models.ImageField(blank=True, upload_to='images/goods/categories', )
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
 
 class ProductSku(BaseModel):
     """"""
@@ -82,11 +87,12 @@ class ProductSku(BaseModel):
 
 class Product(BaseModel):
     """"""
-    name = models.TextField(max_length=250, blank=False, verbose_name='Название')
+    name = models.TextField(max_length=250, blank=False, verbose_name='Название продукта')
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд')
     skus = models.ManyToManyField(ProductSku, verbose_name='Артикулы')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
     def __str__(self):
         return self.name

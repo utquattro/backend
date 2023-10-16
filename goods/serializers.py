@@ -2,17 +2,10 @@ from rest_framework import serializers
 from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
 
 
-
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['name']
-
-
-class CategorieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Categorie
-        fields = ('id', 'category_name', 'title', 'description', 'img_url', 'link_url', 'active',)
+        fields = ('id', 'name', 'description', 'img_url', 'active')
 
 
 class CharacteristicValueSerializer(serializers.ModelSerializer):
@@ -27,6 +20,14 @@ class CharacteristicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Characteristic
         fields = ('id', 'name', 'values', 'description', 'active')
+
+
+class CategorieSerializer(serializers.ModelSerializer):
+    #values = CharacteristicSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Categorie
+        fields = ('id', 'name',  'slug', 'img_url', 'active',)
 
 
 class ProductSkuSerializer(serializers.ModelSerializer):
