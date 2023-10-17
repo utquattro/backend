@@ -42,7 +42,6 @@ class BrandAll(APIView):
             return Response(status=404, data={'not found': str(e)})
 
 
-
 # Create your views here.
 class MainPageSetup(viewsets.ViewSet):
     def list(self, request):
@@ -50,6 +49,20 @@ class MainPageSetup(viewsets.ViewSet):
 
 
 class CategoryAll(APIView):
+    def get(self, request):
+        try:
+            queryset = Cat().active_brand
+            if len(queryset) > 16:
+                paginator = MyPagination()
+                paginated_queryset = paginator.paginate_queryset(queryset, request)
+                serializer = BrandSerializer(paginated_queryset, many=True)
+                return paginator.get_paginated_response(serializer.data)
+            else:
+                serializer = BrandSerializer(queryset, many=True).data
+                return Response(status=200, data={'brand list': serializer})
+        except Http404 as e:
+            return Response(status=404, data={'not found': str(e)})
+
     def get(self, request):
         try:
             att = Attributes().get_active_characteristic()
@@ -71,16 +84,10 @@ class CategoryByName(APIView):
         try:
             asd = Cat().slug_category(category_name)
             print('asd', type(asd))
-            products = True
-            if products:
-                return Response(status=200, data={'category': asd,
-                                                  'products': 'sad',
-                                                  'Property': 'sad'})
-            else:
-                return Response(status=204, data={'category': 'aa',
-                                                  'products': None})
+            return Response(status=200, data={'asd': asd})
+
         except AssertionError as e:
-            return Response(status=404, data={'error': 'category not found'})
+            return Response(status=404, data={'error': str(e)})
 
 
 class ProductFullInfo(APIView):
@@ -96,16 +103,15 @@ class ProductFullInfo(APIView):
 
                     })
             return Response(status=404, data={
-                        'error': 'category not found',
+                'error': 'category not found',
 
-                    })
+            })
         except Exception as e:
             print(e)
             return Response(status=404, data={
                 'error': 'Exception product',
 
             })
-
 
 # class Asdas(APIView):
 #     # def get(self, request, prop_id):

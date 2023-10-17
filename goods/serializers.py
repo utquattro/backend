@@ -19,15 +19,14 @@ class CharacteristicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Characteristic
-        fields = ('id', 'name', 'values', 'description', 'active')
+        fields = ('id', 'name', 'values',  'active')
 
 
 class CategorieSerializer(serializers.ModelSerializer):
-    characteristics = CharacteristicSerializer(many=True, read_only=True)
 
     class Meta:
         model = Categorie
-        fields = ('id', 'name',  'slug', 'img_url', 'active',)
+        fields = ('id', 'name',  'slug',  'img_url', 'active',)
 
 
 class ProductSkuSerializer(serializers.ModelSerializer):

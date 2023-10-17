@@ -25,6 +25,10 @@ class CategorieAdmin(admin.ModelAdmin):
     """
 
     """
+    list_display = (
+        'id', 'name', 'img_url',
+        'created_at', 'slug', 'updated_at', 'active')
+    list_editable = ('active',)
     prepopulated_fields = {"slug": ("name", )}
 
 

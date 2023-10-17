@@ -23,7 +23,7 @@ class Brands:
         # self.active_brand = BrandSerializer(get_list_or_404(Brand.active_objects), many=True).data
 
 
-    # код для обработки отсутствующего объекта
+
     def get_all_brands(self):
         try:
             response_data = BrandSerializer(self.active_brand, many=True).data
@@ -34,36 +34,21 @@ class Brands:
 
 class Cat:
     def __init__(self):
-        self.active_category = Categorie.active_objects.all()
+        self.active_category = Categorie.active_objects
 
     def slug_category(self, category_slug):
-        category = get_object_or_404(Categorie, slug=category_slug)
-        print('cat', type(category))
-        products = Product.objects.filter(category=category)
-        response_data = ProductSerializer(category, many=True).data
+        category = get_object_or_404(self.active_category, slug=category_slug)
+        response_data = CategorieSerializer(category).data
         return response_data
 
     def get_active_category(self):
-        try:
-            response_data = CategorieSerializer(self.active_category, many=True).data
-            return response_data
-        except Exception as e:
-            return None, e
+        pass
 
     def get_category_id_by_name(self, category_name):
-        try:
-            get_category = self.active_category.filter(link_url=category_name)
-            result = CategorieSerializer(get_category, many=True).data[0]['id']
-            return result
-        except IndexError as e:
-            return False
+        pass
 
     def check_category_name(self, category_name):
-        try:
-            self.active_category.get(slug=category_name)
-            return True
-        except Exception as e:
-            return False
+        pass
 
 
 class Goods:
