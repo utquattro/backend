@@ -1,31 +1,47 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from .api import hz_hz
 from .api import Cat, Goods, Attributes, Brands
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Categorie
-from .serializers import CategorieSerializer
+from rest_framework.pagination import PageNumberPagination
+from .serializers import BrandSerializer
+
+
+class MyPagination(PageNumberPagination):
+    page_size = 1
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
+class ProductFull(APIView):
+    def get(self, request, sku_name):
+        try:
+
+            obj = Brands()
+
+            return Response({obj})
+        except AssertionError as e:
+            return Response(status=404, data={'error': 'brand not found'})
 
 
 class BrandAll(APIView):
     def get(self, request):
         try:
+            queryset = Brands().active_brand
+            if len(queryset) > 16:
+                paginator = MyPagination()
+                paginated_queryset = paginator.paginate_queryset(queryset, request)
+                serializer = BrandSerializer(paginated_queryset, many=True)
+                return paginator.get_paginated_response(serializer.data)
+            else:
+                serializer = BrandSerializer(queryset, many=True).data
+                return Response(status=200, data={'brand list': serializer})
+        except Http404 as e:
+            return Response(status=404, data={'not found': str(e)})
 
-            obj = Brands()
-            all_brand = obj.get_all_brands()
-            assert all_brand
-            return Response({'brand': all_brand})
-        except AssertionError as e:
-            return Response(status=404, data={'error': 'brand not found'})
 
-
-def show_post(request, post_slug):
-    post = get_object_or_404(Categorie, slug=post_slug)
-    context = {
-        'post': post,
-    }
-    return post
 
 # Create your views here.
 class MainPageSetup(viewsets.ViewSet):
@@ -53,14 +69,15 @@ class CategoryAll(APIView):
 class CategoryByName(APIView):
     def get(self, request, category_name):
         try:
-            assert (Cat().check_category_name(category_name))
-            products = Goods().get_products_by_category_name(category_name)
+            asd = Cat().slug_category(category_name)
+            print('asd', type(asd))
+            products = True
             if products:
-                return Response(status=200, data={'category': category_name,
-                                                  'products': products,
+                return Response(status=200, data={'category': asd,
+                                                  'products': 'sad',
                                                   'Property': 'sad'})
             else:
-                return Response(status=204, data={'category': category_name,
+                return Response(status=204, data={'category': 'aa',
                                                   'products': None})
         except AssertionError as e:
             return Response(status=404, data={'error': 'category not found'})

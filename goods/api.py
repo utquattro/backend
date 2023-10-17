@@ -1,11 +1,12 @@
 from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
     CharacteristicValueSerializer, BrandSerializer
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 
 class Attributes:
     def __init__(self):
-        self.active_characteristic = Characteristic.objects.filter(active=True)
+        self.active_characteristic = Characteristic.active_objects.all()
 
     def get_active_characteristic(self):
         try:
@@ -16,9 +17,13 @@ class Attributes:
 
 
 class Brands:
-    def __init__(self):
-        self.active_brand = Brand.active_objects.all()
 
+    def __init__(self):
+        self.active_brand = get_list_or_404(Brand.active_objects)
+        # self.active_brand = BrandSerializer(get_list_or_404(Brand.active_objects), many=True).data
+
+
+    # код для обработки отсутствующего объекта
     def get_all_brands(self):
         try:
             response_data = BrandSerializer(self.active_brand, many=True).data
@@ -27,10 +32,16 @@ class Brands:
             return None, e
 
 
-
 class Cat:
     def __init__(self):
-        self.active_category = Categorie.objects.filter(active=True)
+        self.active_category = Categorie.active_objects.all()
+
+    def slug_category(self, category_slug):
+        category = get_object_or_404(Categorie, slug=category_slug)
+        print('cat', type(category))
+        products = Product.objects.filter(category=category)
+        response_data = ProductSerializer(category, many=True).data
+        return response_data
 
     def get_active_category(self):
         try:
@@ -56,9 +67,8 @@ class Cat:
 
 
 class Goods:
-
     def __init__(self):
-        self.active_products = Product.objects.filter(active=True)
+        self.active_products = Product.active_objects.all()
 
     def check_category_name(self, product_name):
         try:
@@ -84,31 +94,20 @@ class Goods:
         else:
             return False
 
-    def get_product_full_info_by_name(self, product_name):
-        try:
-            product = self.get_product_by_name(product_name)
+    # def get_product_full_info_by_name(self, product_name):
+    #     try:
+    #         product = self.get_product_by_name(product_name)
+    #
+    #         product_id = product[0]['id']
+    #         response_data = {product_name: product}
+    #         if product:
+    #             return response_data
+    #         else:
+    #             return False
+    #     except Exception as e:
+    #         return type(e)
 
-            product_id = product[0]['id']
-            response_data = {product_name: product}
-            if product:
-                return response_data
-            else:
-                return False
-        except Exception as e:
-            return type(e)
 
-    def get_products_by_category_name(self, category_name):
-        try:
-            category_id = Cat().get_category_id_by_name(category_name)
-            products = self.active_products.filter(category_id=category_id)
-            if products.count() == 0:
-                return False
-            else:
-                response_data = ProductSerializer(products, many=True).data
-                return response_data
-        except Exception as e:
-            print('exp!!')
-            return e
 
 
 class Sku:
@@ -139,19 +138,3 @@ def hz_hz():
     text = 'hello'
     response_data = {'test': text}
     return response_data
-
-# def add_property(p_name):
-#     new_propery_list = []
-#     new_propoperty = PropertyName.objects.create(name=p_name[0], active=True)
-#     for propery_name in p_name[1]:
-#         new_type_id = PropertyValue.objects.create(value=propery_name, active=True)
-#         new_val_id = Property.objects.create(property_name=new_propoperty,
-#                                              property_value=new_type_id, active=True)
-#         new_propery_list.append(new_type_id.id)
-#     return new_propoperty.id
-#
-#
-# def add_property_to_category(category_id, property_name_id):
-#     new_cat_prop_id = CategoryPropertyConfig.objects.create(category_id=category_id,
-#                                                             property_name_id=property_name_id, active=True)
-#     return new_cat_prop_id.id

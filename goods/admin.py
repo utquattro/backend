@@ -9,10 +9,6 @@ class BrandAdmin(admin.ModelAdmin):
         'created_at', 'updated_at', 'active')
     list_editable = ('active',)
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset.show_all = True  # show all records, including active=False
-        return queryset
 
 
 class CharacteristicValueAdmin(admin.ModelAdmin):
@@ -26,13 +22,14 @@ class CharacteristicsValueAdmin(admin.ModelAdmin):
 
 
 class CategorieAdmin(admin.ModelAdmin):
-    """"""
+    """
+
+    """
     prepopulated_fields = {"slug": ("name", )}
 
 
-
 class ProductAdmin(admin.ModelAdmin):
-    pass
+    prepopulated_fields = {"slug": ("name",)}
 
 
 class ProductItemAdmin(admin.ModelAdmin):

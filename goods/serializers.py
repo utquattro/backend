@@ -11,7 +11,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class CharacteristicValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = CharacteristicValue
-        fields = ('id', 'value', 'description', 'active')
+        fields = ('id', 'value', 'active')
 
 
 class CharacteristicSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class CharacteristicSerializer(serializers.ModelSerializer):
 
 
 class CategorieSerializer(serializers.ModelSerializer):
-    #values = CharacteristicSerializer(many=True, read_only=True)
+    characteristics = CharacteristicSerializer(many=True, read_only=True)
 
     class Meta:
         model = Categorie
@@ -35,15 +35,13 @@ class ProductSkuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductSku
-        fields = ('id', 'sku', 'price', 'characteristics', 'description', 'img_url', 'active')
+        fields = ('id', 'sku', 'characteristics', 'price',  'description', 'img_url', 'active')
 
 
 class ProductSerializer(serializers.ModelSerializer):
     skus = ProductSkuSerializer(many=True, read_only=True)
-    #brand = BrandSerializer()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'category_id', 'title', 'brand', 'skus',  'img_url', 'link_url',
-                  'active',)
+        fields = ('id', 'name', 'brand', 'skus', 'description', 'img_url', 'active',)
 

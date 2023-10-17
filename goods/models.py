@@ -93,6 +93,9 @@ class ProductSku(BaseModel):
                                         null=True,
                                         validators=[MinValueValidator(1)],
                                         verbose_name='Цена')
+    description = models.TextField(max_length=500,
+                                   blank=True, null=True,
+                                   verbose_name='Описание артикула товара')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
 
     def __str__(self):
@@ -105,6 +108,9 @@ class Product(BaseModel):
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
     skus = models.ManyToManyField(ProductSku, verbose_name='Артикулы')
+    description = models.TextField(max_length=500,
+                                   blank=True, null=True,
+                                   verbose_name='Описание товара')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
