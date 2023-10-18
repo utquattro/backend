@@ -1,6 +1,6 @@
 from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
-    CharacteristicValueSerializer, BrandSerializer
+    CharacteristicValueSerializer, BrandSerializer, CategoryAndProductSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 
 
@@ -37,10 +37,16 @@ class Cat:
         self.active_category = Categorie.active_objects
 
     def slug_category(self, category_slug):
-        category = get_object_or_404(self.active_category, slug=category_slug)
-        response_data = CategorieSerializer(category).data
-        return response_data
+        category = get_object_or_404(Categorie.active_objects, slug=category_slug)
+        category_data = CategorieSerializer(category).data
+        products = Product.objects.filter(category=category)
+        products_data = ProductSerializer(products, many=True).data
 
+        response_data = {
+            'category_data': category_data,
+            'products': products_data
+        }
+        return response_data
     def get_active_category(self):
         pass
 

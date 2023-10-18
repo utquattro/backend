@@ -82,9 +82,9 @@ class CategoryAll(APIView):
 class CategoryByName(APIView):
     def get(self, request, category_name):
         try:
-            asd = Cat().slug_category(category_name)
-            print('asd', type(asd))
-            return Response(status=200, data={'asd': asd})
+            category_info = Cat().slug_category(category_name)
+            print('asd', type(category_info))
+            return Response(status=200, data={category_name: category_info})
 
         except AssertionError as e:
             return Response(status=404, data={'error': str(e)})
