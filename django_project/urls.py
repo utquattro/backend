@@ -32,7 +32,7 @@ urlpatterns = [
     # path('stock/<str:product_sku_id>/', StockAmountBySku.as_view()),
     # path('shop_settings/', include('shop_settings.urls')),
     # path('create_/', views.create_settings_value),
-    path('', views.index),
+    #path('', views.index),
 ]
 
 if settings.DEBUG:
