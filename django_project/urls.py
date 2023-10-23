@@ -29,9 +29,9 @@ urlpatterns = [
     # path('category/', CategoryAll.as_view()),
     # path('category/<slug:post_slug>/', show_post, name='category_detail'),
     # path('category/<str:category_name>/<str:product_name>/', ProductFullInfo.as_view()),
-    path('stock/<str:product_sku_id>/', StockAmountBySku.as_view()),
-    path('shop_settings/', include('shop_settings.urls')),
-    path('create_/', views.create_settings_value),
+    # path('stock/<str:product_sku_id>/', StockAmountBySku.as_view()),
+    # path('shop_settings/', include('shop_settings.urls')),
+    # path('create_/', views.create_settings_value),
     path('', views.index),
 ]
 
