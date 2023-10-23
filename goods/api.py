@@ -33,7 +33,7 @@ class Brands:
 
 class Cat:
     def __init__(self):
-        self.active_category = Categorie.active_objects
+        self.active_category = get_list_or_404(Categorie.active_objects)
 
     def slug_category(self, category_slug):
         category = get_object_or_404(Categorie.active_objects, slug=category_slug)

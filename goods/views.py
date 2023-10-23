@@ -6,7 +6,7 @@ from .api import Cat, Goods, Attributes, Brands
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from .serializers import BrandSerializer
+from .serializers import BrandSerializer, CategorieSerializer
 
 
 class MyPagination(PageNumberPagination):
@@ -77,11 +77,21 @@ class CategoryAll(APIView):
             return Response(status=404, data={'error': 'active category not found'})
 
 
+class ShowCategory(APIView):
+    def get(self, request):
+        try:
+            category_all = Cat().active_category
+            cat_response = CategorieSerializer(category_all, many=True)
+            return Response(status=200, data=cat_response.data)
+
+        except AssertionError as e:
+            return Response(status=404, data={'error': str(e)})
+
+
 class CategoryByName(APIView):
     def get(self, request, category_name):
         try:
             category_info = Cat().slug_category(category_name)
-            print('asd', type(category_info))
             return Response(status=200, data={category_name: category_info})
 
         except AssertionError as e:

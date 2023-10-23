@@ -19,12 +19,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from shop_settings import views
-from goods.views import CategoryByName, CategoryAll, ProductFullInfo, BrandAll
-from stock.views import StockAmountBySku
+from goods.views import CategoryByName, ShowCategory, BrandAll
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('brand/',  BrandAll.as_view()),
+    path('cat/', ShowCategory.as_view()),
     path('cat/<slug:category_name>/', CategoryByName.as_view()),
     # path('category/', CategoryAll.as_view()),
     # path('category/<slug:post_slug>/', show_post, name='category_detail'),
