@@ -10,7 +10,7 @@ from .serializers import BrandSerializer
 
 
 class MyPagination(PageNumberPagination):
-    page_size = 1
+    page_size = 100
     page_size_query_param = 'page_size'
     max_page_size = 100
 
@@ -30,14 +30,12 @@ class BrandAll(APIView):
     def get(self, request):
         try:
             queryset = Brands().active_brand
-            if len(queryset) > 16:
-                paginator = MyPagination()
-                paginated_queryset = paginator.paginate_queryset(queryset, request)
-                serializer = BrandSerializer(paginated_queryset, many=True)
-                return paginator.get_paginated_response(serializer.data)
-            else:
-                serializer = BrandSerializer(queryset, many=True).data
-                return Response(status=200, data={'brand list': serializer})
+
+            paginator = MyPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            serializer = BrandSerializer(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
         except Http404 as e:
             return Response(status=404, data={'not found': str(e)})
 

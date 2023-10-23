@@ -1,4 +1,4 @@
-from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
+from .models import Categorie, Product, ProductSku,  Characteristic, Brand
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
     CharacteristicValueSerializer, BrandSerializer, CategoryAndProductSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
@@ -6,11 +6,11 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 class Attributes:
     def __init__(self):
-        self.active_characteristic = Characteristic.active_objects.all()
+        self.active_characteristic = get_list_or_404(Characteristic.active_objects)
 
     def get_active_characteristic(self):
         try:
-            response_data = CharacteristicSerializer(self.active_characteristic, many=True).data
+            response_data = CharacteristicSerializer(self.active_characteristic.active_objects, many=True).data
             return response_data
         except Exception as e:
             return None, e
@@ -21,7 +21,6 @@ class Brands:
     def __init__(self):
         self.active_brand = get_list_or_404(Brand.active_objects)
         # self.active_brand = BrandSerializer(get_list_or_404(Brand.active_objects), many=True).data
-
 
 
     def get_all_brands(self):
