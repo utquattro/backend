@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
-from e_shop.services import translate_text
+from django_project.services import translate_text
 
 
 class ActiveManager(models.Manager):
