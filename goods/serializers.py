@@ -54,3 +54,16 @@ class CategorieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorie
         fields = ('id', 'name',  'slug', 'characteristics', 'img_url', 'active',)
+
+
+class CategorieNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Categorie
+        fields = ('id', 'name',  'slug', 'img_url', 'active',)
+
+
+class CombinedSerializer(serializers.Serializer):
+    category = CategorieSerializer()
+    product = ProductSerializer()
+

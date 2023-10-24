@@ -8,11 +8,12 @@
 #
 # urlpatterns = router.urls
 from django.urls import path
-from goods.views import NewCatAPIView, ShowCategory, NewBrandAPIView, NewCatByNameAPIView
+from goods.views import NewCatAPIView, ShowCategory, NewBrandAPIView, NewCatByNameAPIView, TestListAPIView
 
 urlpatterns = [
-    path('category', NewCatAPIView.as_view(), name='api_categories'),
+    path('category/', NewCatAPIView.as_view()),
     path('category/<slug:category_slug>/', NewCatByNameAPIView.as_view()),
-    path('brand', NewBrandAPIView.as_view()),
+    path('brand/', NewBrandAPIView.as_view()),
+    path('test/', TestListAPIView.as_view()),
 ]
 

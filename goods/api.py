@@ -59,19 +59,6 @@ class Goods:
         else:
             return False
 
-    # def get_product_full_info_by_name(self, product_name):
-    #     try:
-    #         product = self.get_product_by_name(product_name)
-    #
-    #         product_id = product[0]['id']
-    #         response_data = {product_name: product}
-    #         if product:
-    #             return response_data
-    #         else:
-    #             return False
-    #     except Exception as e:
-    #         return type(e)
-
 
 class Sku:
 

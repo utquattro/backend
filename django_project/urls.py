@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from goods.views import CategoryByName, ShowCategory, BrandAll, TestListAPIView
 from django.urls import re_path as url
 from django.views.generic import TemplateView
 from drf_yasg.views import get_schema_view  # new
@@ -52,10 +51,6 @@ urlpatterns = [
         name='schema-json'),
 
     path('admin/', admin.site.urls),
-    # path('brand/',  BrandAll.as_view()),
-    # path('bb/', TestListAPIView.as_view(), name='api_brands'),
-    # path('cat/', ShowCategory.as_view()),
-    # path('cat/<slug:category_name>/', CategoryByName.as_view()),
     path('api/', include('goods.urls')),  # new
 ]
 

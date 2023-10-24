@@ -1,15 +1,12 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
-from .api import hz_hz
-from .api import Cat, Goods, Brands
+
+from .api import Cat, Goods, Brands, Product
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer
+from .serializers import BrandSerializer, CategorieSerializer, CategorieNameSerializer, CombinedSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView
-from . import serializers
-from . import models
+
 
 
 class MyPagination(PageNumberPagination):
@@ -55,11 +52,13 @@ class NewCatByNameAPIView(ListAPIView):
 
 
 class TestListAPIView(ListAPIView):
-    serializer_class = serializers.ProductSkuSerializer
+    serializer_class = CombinedSerializer
 
-    def get_queryset(self):
-        return models.Product.active_objects
-
+    def get_queryset(self, category_slug):
+        return {
+            'category': Cat().slug_category(category_slug),
+            'product': Product().active_objects
+        }
 
 class BrandAll(APIView):
     def get(self, request):
