@@ -14,16 +14,12 @@ class CharacteristicValueSerializer(serializers.ModelSerializer):
         fields = ('id', 'value', 'active')
 
 
-
-
 class CharacteristicSerializer(serializers.ModelSerializer):
     values = CharacteristicValueSerializer(many=True, read_only=True)
 
     class Meta:
         model = Characteristic
         fields = ('id', 'name', 'values',  'active')
-
-
 
 
 class CategorieSerializer(serializers.ModelSerializer):

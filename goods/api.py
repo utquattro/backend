@@ -15,13 +15,9 @@ class Attributes:
         except Exception as e:
             return None, e
 
-
 class Brands:
-
     def __init__(self):
         self.active_brand = get_list_or_404(Brand.active_objects)
-        # self.active_brand = BrandSerializer(get_list_or_404(Brand.active_objects), many=True).data
-
 
     def get_all_brands(self):
         try:

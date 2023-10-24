@@ -15,24 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from shop_settings import views
-from goods.views import CategoryByName, ShowCategory, BrandAll
+from goods.views import CategoryByName, ShowCategory, BrandAll, TestListAPIView
+from rest_framework_swagger.views import get_swagger_view
+from django.urls import re_path as url
+
+schema_view = get_swagger_view(title='Pastebin API')
+
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('brand/',  BrandAll.as_view()),
+    path('bb/', TestListAPIView.as_view(), name='api_brands'),
     path('cat/', ShowCategory.as_view()),
     path('cat/<slug:category_name>/', CategoryByName.as_view()),
-    # path('category/', CategoryAll.as_view()),
-    # path('category/<slug:post_slug>/', show_post, name='category_detail'),
-    # path('category/<str:category_name>/<str:product_name>/', ProductFullInfo.as_view()),
-    # path('stock/<str:product_sku_id>/', StockAmountBySku.as_view()),
-    # path('shop_settings/', include('shop_settings.urls')),
-    # path('create_/', views.create_settings_value),
-    #path('', views.index),
 ]
 
 if settings.DEBUG:

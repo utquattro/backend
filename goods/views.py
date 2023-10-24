@@ -7,6 +7,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .serializers import BrandSerializer, CategorieSerializer
+from rest_framework.generics import ListAPIView
+from . import serializers
+from . import models
 
 
 class MyPagination(PageNumberPagination):
@@ -15,7 +18,7 @@ class MyPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class ProductFull(APIView):
+class Full(APIView):
     def get(self, request, sku_name):
         try:
 
@@ -24,6 +27,13 @@ class ProductFull(APIView):
             return Response({obj})
         except AssertionError as e:
             return Response(status=404, data={'error': 'brand not found'})
+
+
+class TestListAPIView(ListAPIView):
+    serializer_class = serializers.ProductSkuSerializer
+
+    def get_queryset(self):
+        return models.Product.active_objects
 
 
 class BrandAll(APIView):
@@ -40,16 +50,10 @@ class BrandAll(APIView):
             return Response(status=404, data={'not found': str(e)})
 
 
-# Create your views here.
-class MainPageSetup(viewsets.ViewSet):
-    def list(self, request):
-        return Response(hz_hz())
-
-
 class CategoryAll(APIView):
     def get(self, request):
         try:
-            queryset = Cat().active_brand
+            queryset = Cat().active_category
             if len(queryset) > 16:
                 paginator = MyPagination()
                 paginated_queryset = paginator.paginate_queryset(queryset, request)
@@ -60,21 +64,6 @@ class CategoryAll(APIView):
                 return Response(status=200, data={'brand list': serializer})
         except Http404 as e:
             return Response(status=404, data={'not found': str(e)})
-
-    def get(self, request):
-        try:
-            att = Attributes().get_active_characteristic()
-            print(att)
-            obj = Cat()
-            all_category = obj.get_active_category()
-            assert all_category
-            return Response({
-                'active category': all_category,
-                'attr': att,
-            })
-
-        except AssertionError as e:
-            return Response(status=404, data={'error': 'active category not found'})
 
 
 class ShowCategory(APIView):
@@ -92,7 +81,7 @@ class CategoryByName(APIView):
     def get(self, request, category_name):
         try:
             category_info = Cat().slug_category(category_name)
-            return Response(status=200, data={category_name: category_info})
+            return Response(status=200, data=category_info)
 
         except AssertionError as e:
             return Response(status=404, data={'error': str(e)})
@@ -121,56 +110,3 @@ class ProductFullInfo(APIView):
 
             })
 
-# class Asdas(APIView):
-#     # def get(self, request, prop_id):
-#     #     try:
-#     #         product_full_info = Attr().get_propertry_by_id(prop_id)
-#     #         if product_full_info:
-#     #             return Response(product_full_info)
-#     #         else:
-#     #             return Response(status=404, data={
-#     #                 'error': 'attr not found',
-#     #
-#     #             })
-#     #     except Exception as e:
-#     #         print(e)
-#     #         return Response(status=404, data={
-#     #             'error': 'Exception product',
-#     #
-#     #         })
-#     def get(self, request):
-#         try:
-#             obj = Attr()
-#             print("obj", obj)
-#             all_attr = obj.get_active_propertry()
-#             print("all_attr", all_attr)
-#             #assert all_attr
-#             return Response({
-#                 'prop': all_attr
-#             })
-#
-#         except AssertionError as e:
-#             return Response(status=404, data={'error': 'active category not found'})
-
-
-# class AddNewProperty(APIView):
-#
-#     def get(self, request):
-#         memory = ['RAM', [64, 128, 256, 512, 1024, 2048]]
-#         color = ['Color', ['White', 'Gold', 'Blue', 'Green', 'Yellow', 'Pink', 'Red', 'Black']]
-#         display = ['Display', ['IPS', 'LED', 'AMOLED', ]]
-#         internet = ['Internet', ['5g', '4g', 'LTE', 'GPRS']]
-#         brand = ['Brand', ['Acer', 'Asus', 'Apple', 'HP']]
-#         d1 = add_property(memory)
-#         d2 = add_property(display)
-#         d3 = add_property(internet)
-#         d4 = add_property(color)
-#         d5 = add_property(brand)
-#         print(d1)
-#         add_property_to_category(category_id=1, property_name_id=d1)
-#         add_property_to_category(category_id=1, property_name_id=d2)
-#         add_property_to_category(category_id=1, property_name_id=d3)
-#         add_property_to_category(category_id=2, property_name_id=d4)
-#         add_property_to_category(category_id=1, property_name_id=d5)
-#         add_property_to_category(category_id=2, property_name_id=d5)
-#         return Response(status=200, data={'ok': 's'})

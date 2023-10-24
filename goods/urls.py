@@ -1,9 +1,9 @@
 from rest_framework import routers
-from goods.views import MainPageSetup
+from goods.views import TestListAPIView
 
 
 router = routers.DefaultRouter()
-router.register('', MainPageSetup, 'category')
+router.register('', TestListAPIView, 'category')
 
 
 urlpatterns = router.urls
