@@ -2,7 +2,7 @@ from .models import Logo, PaySystem, Phone, Copyright, Socical
 from .serializers import LogoSerializer, PaySystemSerializer, PhoneSystemSerializer, \
     CopyrightSystemSerializer, SocicalSystemSerializer
 
-from goods.api import Cat, Brands
+
 
 
 def main_page_setup():
@@ -11,15 +11,12 @@ def main_page_setup():
     get_copyright = Copyright.objects.filter(active=True)
     get_phone = Phone.objects.filter(active=True)
     get_social = Socical.objects.filter(active=True)
-    get_brand = Brands().active_brand
     response_data = {
         'logo': LogoSerializer(get_logo, many=True).data,
-        'category': Cat().old_get_active_category(),
         'pay_system': PaySystemSerializer(get_pay_systems, many=True).data,
         'social': SocicalSystemSerializer(get_social, many=True).data,
         'phone': PhoneSystemSerializer(get_phone, many=True).data,
         'copyright': CopyrightSystemSerializer(get_copyright, many=True).data,
-        'brand': get_brand
     }
     return response_data
 

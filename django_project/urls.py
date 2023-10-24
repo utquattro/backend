@@ -51,7 +51,8 @@ urlpatterns = [
         name='schema-json'),
 
     path('admin/', admin.site.urls),
-    path('api/', include('goods.urls')),  # new
+
+    path('api/', include('goods.urls'))
 ]
 
 if settings.DEBUG:
