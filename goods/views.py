@@ -2,12 +2,12 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from .api import hz_hz
-from .api import Cat, Goods, Attributes, Brands
+from .api import Cat, Goods, Brands
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from .serializers import BrandSerializer, CategorieSerializer
-from rest_framework.generics import ListAPIView
+from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer
+from rest_framework.generics import ListAPIView, GenericAPIView
 from . import serializers
 from . import models
 
@@ -21,12 +21,37 @@ class MyPagination(PageNumberPagination):
 class Full(APIView):
     def get(self, request, sku_name):
         try:
-
             obj = Brands()
-
             return Response({obj})
         except AssertionError as e:
             return Response(status=404, data={'error': 'brand not found'})
+
+
+class NewBrandAPIView(ListAPIView):
+    serializer_class = BrandSerializer
+
+    def get_queryset(self):
+        return Brands().active_brand
+
+
+class NewCatAPIView(ListAPIView):
+    serializer_class = CategorieSerializer
+
+    def get_queryset(self):
+        return Cat().active_category
+
+
+class NewCatByNameAPIView(ListAPIView):
+    serializer_class = CategorieSerializer
+
+    def get(self, request, category_slug):
+        try:
+            category_info = Cat().slug_category(category_slug)
+            serializer = self.serializer_class(category_info)
+            return Response(serializer.data)
+
+        except AssertionError as e:
+            return Response(status=404, data={'error': str(e)})
 
 
 class TestListAPIView(ListAPIView):
@@ -90,7 +115,7 @@ class CategoryByName(APIView):
 class ProductFullInfo(APIView):
     def get(self, request, product_name, category_name):
         try:
-            if Cat().check_category_name(category_name):
+            if Cat().old_check_category_name(category_name):
                 if Goods().check_category_name(product_name):
                     product_full_info = Goods().get_product_by_name(product_name)
                     return Response(product_full_info)
@@ -109,4 +134,3 @@ class ProductFullInfo(APIView):
                 'error': 'Exception product',
 
             })
-

@@ -14,7 +14,7 @@ def main_page_setup():
     get_brand = Brands().active_brand
     response_data = {
         'logo': LogoSerializer(get_logo, many=True).data,
-        'category': Cat().get_active_category(),
+        'category': Cat().old_get_active_category(),
         'pay_system': PaySystemSerializer(get_pay_systems, many=True).data,
         'social': SocicalSystemSerializer(get_social, many=True).data,
         'phone': PhoneSystemSerializer(get_phone, many=True).data,

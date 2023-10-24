@@ -1,19 +1,8 @@
-from .models import Categorie, Product, ProductSku,  Characteristic, Brand
+from .models import Categorie, Product, ProductSku, Characteristic, Brand
 from .serializers import CategorieSerializer, ProductSerializer, ProductSkuSerializer, CharacteristicSerializer, \
     CharacteristicValueSerializer, BrandSerializer, CategoryAndProductSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 
-
-class Attributes:
-    def __init__(self):
-        self.active_characteristic = get_list_or_404(Characteristic.active_objects)
-
-    def get_active_characteristic(self):
-        try:
-            response_data = CharacteristicSerializer(self.active_characteristic.active_objects, many=True).data
-            return response_data
-        except Exception as e:
-            return None, e
 
 class Brands:
     def __init__(self):
@@ -33,22 +22,12 @@ class Cat:
 
     def slug_category(self, category_slug):
         category = get_object_or_404(Categorie.active_objects, slug=category_slug)
-        category_data = CategorieSerializer(category).data
-        products = Product.objects.filter(category=category)
-        products_data = ProductSerializer(products, many=True).data
+        return category
 
-        response_data = {
-            'category_data': category_data,
-            'products': products_data
-        }
-        return response_data
-    def get_active_category(self):
+    def old_get_active_category(self):
         pass
 
-    def get_category_id_by_name(self, category_name):
-        pass
-
-    def check_category_name(self, category_name):
+    def old_check_category_name(self, category_name):
         pass
 
 
@@ -92,8 +71,6 @@ class Goods:
     #             return False
     #     except Exception as e:
     #         return type(e)
-
-
 
 
 class Sku:

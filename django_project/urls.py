@@ -15,23 +15,48 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from goods.views import CategoryByName, ShowCategory, BrandAll, TestListAPIView
-from rest_framework_swagger.views import get_swagger_view
 from django.urls import re_path as url
+from django.views.generic import TemplateView
+from drf_yasg.views import get_schema_view  # new
+from drf_yasg import openapi  # new
 
-schema_view = get_swagger_view(title='Pastebin API')
 
+schema_view = get_schema_view(  # new
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    # url=f'{settings.APP_URL}/api/v3/',
+    patterns=[path('api/', include('goods.urls')), ],
+    public=True)
 
 urlpatterns = [
+    path(  # new
+        'swagger-ui/',
+        TemplateView.as_view(
+            template_name='swaggerui/swaggerui.html',
+            extra_context={'schema_url': 'openapi-schema'}
+        ),
+        name='swagger-ui'),
+    url(  # new
+        r'^swagger(?P<format>\.json|\.yaml)$',
+        schema_view.without_ui(cache_timeout=0),
+        name='schema-json'),
 
     path('admin/', admin.site.urls),
-    path('brand/',  BrandAll.as_view()),
-    path('bb/', TestListAPIView.as_view(), name='api_brands'),
-    path('cat/', ShowCategory.as_view()),
-    path('cat/<slug:category_name>/', CategoryByName.as_view()),
+    # path('brand/',  BrandAll.as_view()),
+    # path('bb/', TestListAPIView.as_view(), name='api_brands'),
+    # path('cat/', ShowCategory.as_view()),
+    # path('cat/<slug:category_name>/', CategoryByName.as_view()),
+    path('api/', include('goods.urls')),  # new
 ]
 
 if settings.DEBUG:

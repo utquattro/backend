@@ -22,11 +22,7 @@ class CharacteristicSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'values',  'active')
 
 
-class CategorieSerializer(serializers.ModelSerializer):
-    characteristics = CharacteristicSerializer(many=True, read_only=True)
-    class Meta:
-        model = Categorie
-        fields = ('id', 'name',  'slug', 'characteristics', 'img_url', 'active',)
+
 
 
 class ProductSkuSerializer(serializers.ModelSerializer):
@@ -42,7 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand', 'skus', 'description', 'img_url', 'active',)
+        fields = ('id', 'name', 'brand', 'category', 'skus', 'description', 'img_url', 'active',)
 
 
 class CategoryAndProductSerializer(serializers.ModelSerializer):
@@ -52,3 +48,9 @@ class CategoryAndProductSerializer(serializers.ModelSerializer):
         model = Categorie
         fields = ('id', 'name',  'slug',  'img_url', 'active', 'product',)
 
+
+class CategorieSerializer(serializers.ModelSerializer):
+    characteristics = CharacteristicSerializer(many=True, read_only=True)
+    class Meta:
+        model = Categorie
+        fields = ('id', 'name',  'slug', 'characteristics', 'img_url', 'active',)
