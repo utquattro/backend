@@ -45,9 +45,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class ProductItemAdmin(admin.ModelAdmin):
-    list_editable = ('active',)
-
-
+    pass
 
 
 admin.site.register(Categorie, CategorieAdmin)
