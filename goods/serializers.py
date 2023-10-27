@@ -22,9 +22,6 @@ class CharacteristicSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'values',  'active')
 
 
-
-
-
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicValueSerializer(many=True, read_only=True)
 
