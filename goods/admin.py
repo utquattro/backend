@@ -33,11 +33,21 @@ class CategorieAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
+    """
+
+    """
+    list_display = (
+        'id', 'name', 'img_url',
+        'created_at', 'slug', 'updated_at', 'active')
+    list_editable = ('active',)
+
     prepopulated_fields = {"slug": ("name",)}
 
 
 class ProductItemAdmin(admin.ModelAdmin):
-    pass
+    list_editable = ('active',)
+
+
 
 
 admin.site.register(Categorie, CategorieAdmin)
