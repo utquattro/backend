@@ -11,8 +11,7 @@ class NewBrandAPIView(ListAPIView):
     serializer_class = BrandSerializer
 
     def get_queryset(self):
-        sd = Goods().active_products
-        print(type(sd), sd)
+        sd = Brands().active_brand
         return sd
 
 
