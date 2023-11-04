@@ -1,16 +1,18 @@
-from .models import Phone
-from .serializers import LogoSerializer, PaySystemSerializer, PhoneSystemSerializer, \
-    CopyrightSystemSerializer, SocicalSystemSerializer
+from .models import Information, Socical, PaySystem, Logo, MarketingBanner
+from django.shortcuts import get_list_or_404, get_object_or_404
+
+
+class ShopSetting:
+    def __init__(self):
+        self.active_info = Information.active_objects
+        self.active_logo = Logo.active_objects
+        print("acvrt:", self.active_logo.count())
+        self.active_social = Socical.active_objects
+        self.active_pay_system = PaySystem.active_objects
+        self.active_marketing_banner = MarketingBanner.active_objects
 
 
 
-
-def main_page_setup():
-
-    response_data = {
-        'logo': 'asd'
-    }
-    return response_data
 
 
 # def create_test_value():
@@ -53,6 +55,3 @@ def main_page_setup():
 #                             logo_url='images/shop_settings/logo/logo.png',
 #                             active=True)
 #     b.save()
-
-
-

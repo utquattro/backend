@@ -4,9 +4,9 @@ from django_project.base_model import BaseModel, ImgModel
 
 class Information(BaseModel):
     class Position(models.TextChoices):
-        Copyright = "copyright"
-        Phone1 = "phone_main"
-        Phone2 = "phone_second"
+        copyright = "copyright"
+        phone_main = "phone_main"
+        phone_second = "phone_second"
 
     name = models.CharField(choices=Position.choices, unique=True, null=True)
     value = models.TextField(verbose_name='Значение')
@@ -34,4 +34,7 @@ class Socical(ImgModel):
     img_url = models.ImageField(upload_to='images/shop_settings/social')
 
 
-
+class MarketingBanner(ImgModel):
+    """"""
+    name = models.TextField(verbose_name='Имя баннера')
+    img_url = models.ImageField(upload_to='images/shop_settings/marketing_banner')

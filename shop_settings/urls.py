@@ -1,6 +1,7 @@
 from django.urls import path
-from goods.views import GetProductBySlugAPIView
+from .views import GetInformation, AllFieldsAPIView
 
 urlpatterns = [
-    path('settings/', GetProductBySlugAPIView.as_view()),
+    path('info/', GetInformation.as_view()),
+    path('settings/', AllFieldsAPIView.as_view()),
 ]
