@@ -1,72 +1,37 @@
 from django.db import models
+from django_project.base_model import BaseModel, ImgModel
 
 
-class Phone(models.Model):
-    """"""
+class Information(BaseModel):
+    class Position(models.TextChoices):
+        Copyright = "copyright"
+        Phone1 = "phone_main"
+        Phone2 = "phone_second"
 
-    class Position(models.IntegerChoices):
-        FIRST = 1
-        SECOND = 2
-
-    objects = models.Manager()
-    number = models.TextField(max_length=50, blank=False)
-    position = models.IntegerField(choices=Position.choices, unique=True, null=True)
+    name = models.CharField(choices=Position.choices, unique=True, null=True)
+    value = models.TextField(verbose_name='Значение')
     description = models.TextField(max_length=500, blank=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return self.number
-
-
-class Socical(models.Model):
-    """"""
-    objects = models.Manager()
-    name = models.TextField(max_length=50, blank=False)
-    description = models.TextField(max_length=500, blank=True)
-    link = models.TextField(max_length=500, blank=False)
-    img_url = models.ImageField(blank=False, upload_to='images/shop_settings/social', )
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Copyright(models.Model):
+class Logo(ImgModel):
     """"""
-    objects = models.Manager()
-    name = models.TextField(max_length=50, blank=False)
-    description = models.TextField(max_length=500, blank=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return self.name
+    img_url = models.ImageField(upload_to='images/shop_settings/logo')
 
 
-class PaySystem(models.Model):
+class PaySystem(ImgModel):
     """"""
-    objects = models.Manager()
-    pay_system_name = models.TextField(max_length=50, blank=False)
-    description = models.TextField(max_length=500, blank=True)
-    img_url = models.ImageField(blank=False, upload_to='images/shop_settings/pay_system', )
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True, blank=True)
-
-    def __str__(self):
-        return self.pay_system_name
+    name = models.TextField(verbose_name='Платежная система')
+    img_url = models.ImageField(upload_to='images/shop_settings/pay_system')
 
 
-class Logo(models.Model):
+class Socical(ImgModel):
     """"""
-    objects = models.Manager()
-    title = models.TextField(max_length=250, blank=False)
-    description = models.TextField(max_length=500, blank=True)
-    logo_url = models.ImageField(blank=False, upload_to='images/shop_settings/logo', )
-    create_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(blank=True)
+    name = models.TextField(verbose_name='Название соц.сети')
+    description= models.TextField(verbose_name='ссылка на соц.сеть')
+    img_url = models.ImageField(upload_to='images/shop_settings/social')
 
-    def __str__(self):
-        return self.title
+
 

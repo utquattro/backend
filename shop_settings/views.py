@@ -1,25 +1,28 @@
-from django.shortcuts import render
-from .api import create_test_value, main_page_setup
-
-from shop_settings.models import Copyright, PaySystem, Phone, Logo, Socical
-from rest_framework import viewsets
+from .api import Logo
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from .serializers import LogoSerializer
+from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 
-def index(request):
-    dd = main_page_setup()
-    data = {"setup": dd}
-    return render(request, "index.html", context=data)
-
-
-def create_settings_value(request):
-    create_test_value()
-    dd = '21312'
-    data = {"header": "Hello Django", "message": dd}
-    return render(request, "index.html", context=data)
-
-
-class MainPageSetup(viewsets.ViewSet):
-    def list(self, request):
-        return Response(main_page_setup())
-
+class GetProductBySlugAPIView(RetrieveAPIView):
+    pass
+    # queryset = Logo
+    # serializer_class = ProductDetailSerializer
+    # lookup_field = 'slug'  # Optional, if the product's slug field name is different
+    #
+    # def get_object(self):
+    #     # queryset = self.get_queryset()
+    #     # queryset_sku = Goods().active_sku
+    #     # obj = get_object_or_404(queryset, slug=self.kwargs['product_slug'])
+    #     # #resp = obj
+    #     # obj2 = get_list_or_404(queryset_sku, product__slug=self.kwargs['product_slug'])
+    #     # print(obj)
+    #     # print(obj2)
+    #     # resp = {
+    #     #    "product": obj,
+    #     #     "skus": obj2,
+    #     # }
+    #
+    #     return pass

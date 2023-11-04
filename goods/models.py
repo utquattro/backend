@@ -1,32 +1,7 @@
 from django.db import models
+from django_project.base_model import BaseModel, ImgModel
 from django.urls import reverse
 from django.core.validators import MinValueValidator
-from django_project.services import translate_text
-
-
-class ActiveManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(active=True)
-
-
-class InactiveManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(active=False)
-
-
-class BaseModel(models.Model):
-    """
-    Used in all the models as base
-    """
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True, blank=True, help_text='If this object is active')
-    objects = models.Manager()
-    active_objects = ActiveManager()
-    inactive_objects = InactiveManager()
-
-    class Meta:
-        abstract = True
 
 
 class Brand(BaseModel):

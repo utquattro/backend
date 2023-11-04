@@ -34,7 +34,8 @@ schema_view = get_schema_view(  # new
         license=openapi.License(name="BSD License"),
     ),
     # url=f'{settings.APP_URL}/api/v3/',
-    patterns=[path('api/', include('goods.urls')), ],
+    patterns=[path('api/', include('goods.urls')),
+              path('api/', include('shop_settings.urls'))],
     public=True)
 
 urlpatterns = [
@@ -52,7 +53,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    path('api/', include('goods.urls'))
+    path('api/', include('goods.urls')),
+    path('api/', include('shop_settings.urls'))
 ]
 
 if settings.DEBUG:

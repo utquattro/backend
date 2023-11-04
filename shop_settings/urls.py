@@ -1,11 +1,6 @@
-from rest_framework import routers
-from .views import MainPageSetup
+from django.urls import path
+from goods.views import GetProductBySlugAPIView
 
-
-router = routers.DefaultRouter()
-router.register('', MainPageSetup, 'eshop_setup')
-
-
-urlpatterns = router.urls
-
-
+urlpatterns = [
+    path('settings/', GetProductBySlugAPIView.as_view()),
+]

@@ -1,12 +1,3 @@
-# from rest_framework import routers
-# from goods.views import TestListAPIView
-#
-#
-# router = routers.DefaultRouter()
-# router.register('', TestListAPIView, 'category')
-#
-#
-# urlpatterns = router.urls
 from django.urls import path
 from goods.views import NewCatAPIView, NewBrandAPIView, \
     CategoryProductNameAPIView, GetProductBySlugAPIView, ProductWithSku, FroductWithSku
