@@ -1,4 +1,4 @@
-from .models import Categorie, Brand, Product
+from .models import Categorie, Brand, Product, ProductSku
 from django.shortcuts import get_object_or_404, get_list_or_404
 
 
@@ -19,6 +19,7 @@ class Cat:
 class Goods:
     def __init__(self):
         self.active_products = Product.active_objects
+        self.active_sku = ProductSku.active_objects
 
     def product_by_slug(self, product_slug):
         product_list = get_object_or_404(self.active_products, slug=product_slug)

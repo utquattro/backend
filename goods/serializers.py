@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
+from .models import Brand, Categorie, Product, ProductSku, \
+    CharacteristicValue, Characteristic, CharacteristicName
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -8,34 +9,69 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'img_url', 'active')
 
 
+# class CharacteristicNameSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CharacteristicName
+#         fields = ('id', 'value', 'active')
+#
+#
+# class CharacteristicValueSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CharacteristicValue
+#         fields = ('id', 'name', 'active')
+#
+#
+# class CharacteristicSerializer(serializers.ModelSerializer):
+#     name = serializers.CharField()
+#     value = serializers.CharField()
+#
+#     class Meta:
+#         model = Characteristic
+#         fields = ('name', 'value')
+class CharacteristicNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacteristicName
+        fields = ['name']
+
+
 class CharacteristicValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = CharacteristicValue
-        fields = ('id', 'value', 'active')
+        fields = ['value']
 
 
 class CharacteristicSerializer(serializers.ModelSerializer):
-    values = CharacteristicValueSerializer(many=True, read_only=True)
+    name = serializers.CharField()
+    value = serializers.CharField()
 
     class Meta:
         model = Characteristic
-        fields = ('id', 'name', 'values',  'active')
+        fields = ['name', 'value']
 
 
-class ProductSkuSerializer(serializers.ModelSerializer):
-    characteristics = CharacteristicValueSerializer(many=True, read_only=True)
+class CharacteristicListSerializer(serializers.Serializer):
+    char = CharacteristicSerializer(many=True)
+    name = serializers.SerializerMethodField()
 
-    class Meta:
-        model = ProductSku
-        fields = ('id', 'sku', 'characteristics', 'price',  'description', 'img_url', 'active')
+    def get_name(self, obj):
+        return obj['name'].name
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    skus = ProductSkuSerializer(many=True, read_only=True)
+    brand = serializers.CharField()
+    category = serializers.CharField()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand', 'category', 'skus', 'description', 'slug', 'img_url', 'active',)
+        fields = ('id', 'name', 'brand', 'category', 'description', 'slug', 'img_url', 'active',)
+
+
+class ProductSkuSerializer(serializers.ModelSerializer):
+    characteristics = CharacteristicSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ProductSku
+        fields = ('id', 'sku',  'price', 'product', 'description', 'img_url', 'active', 'characteristics',)
 
 
 class CategoryAndProductSerializer(serializers.ModelSerializer):
@@ -61,6 +97,15 @@ class CategorieNameSerializer(serializers.ModelSerializer):
 
 
 class CombinedSerializer(serializers.Serializer):
-    category = CategorieSerializer()
     product = ProductSerializer()
+    sku = ProductSkuSerializer()
+
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    skus = ProductSkuSerializer()
+
+    class Meta:
+        model = Product
+        fields = ('product', 'skus', )
 

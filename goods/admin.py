@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, Brand
+from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, CharacteristicName, Brand
 
 
 class BrandAdmin(admin.ModelAdmin):
@@ -9,6 +9,10 @@ class BrandAdmin(admin.ModelAdmin):
         'created_at', 'updated_at', 'active')
     list_editable = ('active',)
 
+
+class CharacteristicNameAdmin(admin.ModelAdmin):
+    """"""
+    pass
 
 
 class CharacteristicValueAdmin(admin.ModelAdmin):
@@ -51,7 +55,7 @@ class ProductItemAdmin(admin.ModelAdmin):
 admin.site.register(Categorie, CategorieAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductSku, ProductItemAdmin)
-
+admin.site.register(CharacteristicName, CharacteristicNameAdmin)
 admin.site.register(CharacteristicValue, CharacteristicValueAdmin)
 admin.site.register(Characteristic, CharacteristicValueAdmin)
 
