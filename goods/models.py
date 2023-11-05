@@ -27,26 +27,13 @@ class Categorie(BaseModel):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
-        return self.name
+        return self.slug
 
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
 
-class Product(BaseModel):
-    """"""
-    name = models.TextField(max_length=250, blank=False, verbose_name='Название продукта')
-    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
-    description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание товара')
-    img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('product_detail', kwargs={'slug': self.slug})
 
 
 class CharacteristicName(BaseModel):
@@ -67,7 +54,7 @@ class CharacteristicValue(BaseModel):
 
 class Characteristic(BaseModel):
     name = models.ForeignKey(CharacteristicName, on_delete=models.CASCADE, blank=False, default=None,
-                             verbose_name='Значение характеристики')
+                             verbose_name='Имя характеристики')
     value = models.ForeignKey(CharacteristicValue, on_delete=models.CASCADE, blank=False, default=None,
                               verbose_name='Значение характеристики')
 
@@ -80,14 +67,33 @@ class Characteristic(BaseModel):
 
 class ProductSku(BaseModel):
     """"""
-    sku = models.TextField(max_length=100, blank=True, null=True, unique=True,
+    sku = models.TextField(max_length=100, blank=False, null=True, unique=True,
                            verbose_name='Артикул товара')
-    product = models.ForeignKey(Product, verbose_name='Продукт', on_delete=models.CASCADE, default=None)
     characteristics = models.ManyToManyField(Characteristic, related_name="sku_char")
-    price = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(1)],
+    price = models.PositiveIntegerField(blank=False, null=True, validators=[MinValueValidator(1)],
                                         verbose_name='Цена')
+    stock = models.PositiveIntegerField(blank=False, null=True, validators=[MinValueValidator(0)],
+                                        verbose_name='Остаток')
     description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание артикула товара')
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
 
     def __str__(self):
         return self.sku
+
+
+class Product(BaseModel):
+    """"""
+    name = models.TextField(max_length=250, blank=False, verbose_name='Название продукта')
+    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
+    skus = models.ManyToManyField(ProductSku, related_name="product_skus", blank=False)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
+    description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание товара')
+    img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'slug': self.slug})
+

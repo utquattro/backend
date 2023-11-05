@@ -1,5 +1,5 @@
 from django.test import TestCase
-from goods.serializers import CombinedSerializer
+
 from django.shortcuts import get_object_or_404, get_list_or_404
 from goods.api import Cat
 from goods.models import Categorie

@@ -6,7 +6,6 @@ class ShopSetting:
     def __init__(self):
         self.active_info = Information.active_objects
         self.active_logo = Logo.active_objects
-        print("acvrt:", self.active_logo.count())
         self.active_social = Socical.active_objects
         self.active_pay_system = PaySystem.active_objects
         self.active_marketing_banner = MarketingBanner.active_objects

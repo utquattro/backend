@@ -2,53 +2,47 @@ from django.contrib import admin
 from .models import Categorie, Product, ProductSku, CharacteristicValue, Characteristic, CharacteristicName, Brand
 
 
-class BrandAdmin(admin.ModelAdmin):
+class BaseAdmin(admin.ModelAdmin):
     """"""
     list_display = (
-        'id', 'name', 'img_url',
-        'created_at', 'updated_at', 'active')
+        'id', 'created_at', 'updated_at', 'active')
     list_editable = ('active',)
 
 
-class CharacteristicNameAdmin(admin.ModelAdmin):
+class BrandAdmin(BaseAdmin):
+    """"""
+    pass
+
+class CharacteristicNameAdmin(BaseAdmin):
     """"""
     pass
 
 
-class CharacteristicValueAdmin(admin.ModelAdmin):
+class CharacteristicValueAdmin(BaseAdmin):
     """"""
     pass
 
 
-class CharacteristicsValueAdmin(admin.ModelAdmin):
+class CharacteristicsValueAdmin(BaseAdmin):
     """"""
     pass
 
 
-class CategorieAdmin(admin.ModelAdmin):
+class CategorieAdmin(BaseAdmin):
     """
 
     """
-    list_display = (
-        'id', 'name', 'img_url',
-        'created_at', 'slug', 'updated_at', 'active')
-    list_editable = ('active',)
     prepopulated_fields = {"slug": ("name", )}
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(BaseAdmin):
     """
 
     """
-    list_display = (
-        'id', 'name', 'img_url',
-        'created_at', 'slug', 'updated_at', 'active')
-    list_editable = ('active',)
-
     prepopulated_fields = {"slug": ("name",)}
 
 
-class ProductItemAdmin(admin.ModelAdmin):
+class ProductItemAdmin(BaseAdmin):
     pass
 
 

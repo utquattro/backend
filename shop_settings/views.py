@@ -1,7 +1,7 @@
 from .api import ShopSetting
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import InformationSerializer,  SocicalSerializer, PaySystemSerializer, \
+from .serializers import InformationSerializer, SocicalSerializer, PaySystemSerializer, \
     MainSettingSerializer, LogoSerializer, MarketingBannerSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 class GetInformation(ListAPIView):
     queryset = ShopSetting().active_info
     serializer_class = InformationSerializer
-
 
 
 class AllFieldsAPIView(ListAPIView):
@@ -25,7 +24,7 @@ class AllFieldsAPIView(ListAPIView):
         banners = shop_api.active_marketing_banner
 
         resp = {
-            'logo':  LogoSerializer(logo, many=True).data,
+            'logo': LogoSerializer(logo, many=True).data,
             'information': InformationSerializer(information, many=True).data,
             "pay_system": PaySystemSerializer(pay, many=True).data,
             "social": SocicalSerializer(social, many=True).data,

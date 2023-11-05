@@ -30,7 +30,7 @@ class LogoSerializer(serializers.ModelSerializer):
 class MarketingBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = MarketingBanner
-        fields = ('name', 'description', 'img_url')
+        fields = ('name', 'description', 'start_date', 'end_date' , 'img_url')
 
 
 class MainSettingSerializer(serializers.Serializer):

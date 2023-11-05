@@ -36,5 +36,7 @@ class Socical(ImgModel):
 
 class MarketingBanner(ImgModel):
     """"""
-    name = models.TextField(verbose_name='Имя баннера')
+    name = models.TextField(unique=True, blank=False)
+    start_date = models.DateTimeField(blank=False, default=None)
+    end_date = models.DateTimeField(blank=False, default=None)
     img_url = models.ImageField(upload_to='images/shop_settings/marketing_banner')

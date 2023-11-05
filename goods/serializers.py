@@ -9,25 +9,6 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'img_url', 'active')
 
 
-# class CharacteristicNameSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CharacteristicName
-#         fields = ('id', 'value', 'active')
-#
-#
-# class CharacteristicValueSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CharacteristicValue
-#         fields = ('id', 'name', 'active')
-#
-#
-# class CharacteristicSerializer(serializers.ModelSerializer):
-#     name = serializers.CharField()
-#     value = serializers.CharField()
-#
-#     class Meta:
-#         model = Characteristic
-#         fields = ('name', 'value')
 class CharacteristicNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = CharacteristicName
@@ -57,21 +38,23 @@ class CharacteristicListSerializer(serializers.Serializer):
         return obj['name'].name
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    brand = serializers.CharField()
-    category = serializers.CharField()
-
-    class Meta:
-        model = Product
-        fields = ('id', 'name', 'brand', 'category', 'description', 'slug', 'img_url', 'active',)
-
-
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductSku
-        fields = ('id', 'sku',  'price', 'product', 'description', 'img_url', 'active', 'characteristics',)
+        fields = ('id', 'sku', 'description', 'img_url', 'price', 'stock', 'characteristics', 'active',)
+
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    brand = serializers.CharField()
+    category = serializers.CharField()
+    skus = ProductSkuSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'brand', 'category', 'description', 'slug', 'img_url', 'active', 'skus', )
 
 
 class CategoryAndProductSerializer(serializers.ModelSerializer):
@@ -84,6 +67,7 @@ class CategoryAndProductSerializer(serializers.ModelSerializer):
 
 class CategorieSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
+
     class Meta:
         model = Categorie
         fields = ('id', 'name',  'slug', 'characteristics', 'img_url', 'active',)
@@ -96,16 +80,9 @@ class CategorieNameSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',  'slug', 'img_url', 'active',)
 
 
-class CombinedSerializer(serializers.Serializer):
-    product = ProductSerializer()
-    sku = ProductSkuSerializer()
 
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-    skus = ProductSkuSerializer()
-
-    class Meta:
-        model = Product
-        fields = ('product', 'skus', )
+# class ProductSkusSerializer(serializers.Serializer):
+#     product = ProductSerializer()
+#     skus = ProductSerializer(many=True, read_only=True)
 
