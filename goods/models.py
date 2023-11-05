@@ -59,7 +59,7 @@ class Characteristic(BaseModel):
                               verbose_name='Значение характеристики')
 
     def __str__(self):
-        return self.name
+        return str(self.name) + " " + str(self.value)
 
     class Meta:
         unique_together = ('name', 'value')
