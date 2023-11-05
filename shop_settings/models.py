@@ -8,7 +8,7 @@ class Information(BaseModel):
         phone_main = "phone_main"
         phone_second = "phone_second"
 
-    name = models.CharField(choices=Position.choices, unique=True, null=True)
+    name = models.CharField(choices=Position.choices, unique=True, null=False)
     value = models.TextField(verbose_name='Значение')
     description = models.TextField(max_length=500, blank=True)
 
