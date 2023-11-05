@@ -11,27 +11,39 @@ class BaseAdmin(admin.ModelAdmin):
 
 class BrandAdmin(BaseAdmin):
     """"""
-    pass
+    list_display = (
+        'id',  'name', 'active', 'description',
+        'created_at', 'updated_at', 'active')
+
 
 class CharacteristicNameAdmin(BaseAdmin):
     """"""
-    pass
+    list_display = (
+        'id',  'name',
+        'created_at', 'updated_at', 'active')
+
 
 
 class CharacteristicValueAdmin(BaseAdmin):
     """"""
-    pass
+    list_display = (
+        'id',  'value',
+        'created_at', 'updated_at', 'active')
 
 
-class CharacteristicsValueAdmin(BaseAdmin):
+class CharacteristicsAdmin(BaseAdmin):
     """"""
-    pass
-
+    list_display = (
+        'id', 'name',  'value',
+        'created_at', 'updated_at', 'active')
 
 class CategorieAdmin(BaseAdmin):
     """
 
     """
+    list_display = (
+        'id', 'slug', 'name', 'img_url',
+        'created_at', 'updated_at', 'active')
     prepopulated_fields = {"slug": ("name", )}
 
 
@@ -39,10 +51,16 @@ class ProductAdmin(BaseAdmin):
     """
 
     """
+    list_display = (
+        'id', 'slug', 'name', 'category', 'brand',
+        'created_at', 'updated_at', 'active')
     prepopulated_fields = {"slug": ("name",)}
 
 
 class ProductItemAdmin(BaseAdmin):
+    list_display = (
+        'id', 'sku', 'price', 'stock', 'description', 'img_url',
+        'created_at', 'updated_at', 'active')
     pass
 
 
@@ -51,6 +69,6 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductSku, ProductItemAdmin)
 admin.site.register(CharacteristicName, CharacteristicNameAdmin)
 admin.site.register(CharacteristicValue, CharacteristicValueAdmin)
-admin.site.register(Characteristic, CharacteristicValueAdmin)
+admin.site.register(Characteristic, CharacteristicsAdmin)
 
 admin.site.register(Brand, BrandAdmin)
