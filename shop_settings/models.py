@@ -23,7 +23,7 @@ class Logo(ImgModel):
 
 class PaySystem(ImgModel):
     """"""
-    name = models.TextField(verbose_name='Платежная система')
+    name = models.TextField(verbose_name='Платежная система', unique=True, blank=False, default=None )
     img_url = models.ImageField(upload_to='images/shop_settings/pay_system')
 
 
