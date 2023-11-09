@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import GetInformation, AllFieldsAPIView
+from .views import GetAllMK, Settings
 
 urlpatterns = [
-    path('info/', GetInformation.as_view()),
-    path('settings/', AllFieldsAPIView.as_view()),
+    path('banners/', GetAllMK.as_view()),
+    path('settings/', Settings.as_view()),
 ]
