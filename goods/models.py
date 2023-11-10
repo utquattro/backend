@@ -63,7 +63,7 @@ class Characteristic(BaseModel):
 
     class Meta:
         unique_together = ('name', 'value')
-
+        ordering = ['value']
 
 class ProductSku(BaseModel):
     """"""

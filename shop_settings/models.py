@@ -25,6 +25,7 @@ class MarketingBanner(ImgModel):
     def __str__(self):
         return self.name + " завершение: " + str(self.end_date)
 
+
 class Settings(BaseModel):
     """"""
     logo = models.ImageField(blank=False, upload_to='images/shop_settings/logo')

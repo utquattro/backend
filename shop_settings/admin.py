@@ -14,11 +14,12 @@ class SettingsAdmin(BaseAdmin):
         'id', 'logo', 'phone_main', 'phone_sec', 'copyright', 'created_at', 'updated_at')
     exclude = ('active',)
 
-
-
+    def has_add_permission(self, request):
+        return False
 
     def has_delete_permission(self, request, obj=None):
         return False
+
 
 
 class MarketingBannerAdmin(BaseAdmin):
