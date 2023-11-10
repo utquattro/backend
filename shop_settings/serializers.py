@@ -27,10 +27,9 @@ class SettingsSerializer(serializers.Serializer):
     copyright = serializers.CharField()
     social = SocicalSerializer(many=True, read_only=True)
     pay_system = PaySystemSerializer(many=True, read_only=True)
-    marketing_banners = MarketingBannerSerializer(many=True, read_only=True)
 
 
     class Meta:
         model = Settings
-        fields = ('logo', 'phone_main', 'phone_sec', 'copyright', 'social', 'pay_system', 'marketing_banners')
+        fields = ('logo', 'phone_main', 'phone_sec', 'copyright', 'social', 'pay_system')
 
