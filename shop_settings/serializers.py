@@ -5,13 +5,13 @@ from .models import PaySystem, Socical, MarketingBanner, Settings
 class SocicalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Socical
-        fields = ('name', 'description', 'img_url', 'active')
+        fields = ('name', 'description','active')
 
 
 class PaySystemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaySystem
-        fields = ('name', 'description', 'img_url', 'active')
+        fields = ('name', 'description', 'active')
 
 
 class MarketingBannerSerializer(serializers.ModelSerializer):
