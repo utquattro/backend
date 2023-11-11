@@ -34,7 +34,7 @@ class Settings(BaseModel):
     copyright = models.TextField(max_length=500, blank=False)
     social = models.ManyToManyField(Socical, related_name="socials", blank=False)
     pay_system = models.ManyToManyField(PaySystem, related_name="socials", blank=False)
-    marketing_banners = models.ManyToManyField(MarketingBanner, related_name="mk", blank=False)
+
 
     def __str__(self):
         return str('main settings model')
