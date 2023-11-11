@@ -43,6 +43,10 @@ class CharacteristicName(BaseModel):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
+
 
 class CharacteristicValue(BaseModel):
     value = models.CharField(max_length=50, unique=True, blank=False,
@@ -50,6 +54,9 @@ class CharacteristicValue(BaseModel):
 
     def __str__(self):
         return self.value
+
+    class Meta:
+        ordering = ['value']
 
 
 class Characteristic(BaseModel):
@@ -63,7 +70,8 @@ class Characteristic(BaseModel):
 
     class Meta:
         unique_together = ('name', 'value')
-        ordering = ['value']
+        ordering = ['name']
+
 
 class ProductSku(BaseModel):
     """"""
@@ -79,6 +87,9 @@ class ProductSku(BaseModel):
 
     def __str__(self):
         return self.sku
+
+    class Meta:
+        ordering = ['sku']
 
 
 class Product(BaseModel):
@@ -97,3 +108,5 @@ class Product(BaseModel):
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
 
+    class Meta:
+        ordering = ['name']
