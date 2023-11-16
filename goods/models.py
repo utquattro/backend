@@ -32,6 +32,8 @@ class Categorie(BaseModel):
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
+    class Meta:
+        ordering = ['id']
 
 
 
@@ -110,3 +112,5 @@ class Product(BaseModel):
 
     class Meta:
         ordering = ['name']
+
+
