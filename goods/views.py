@@ -1,5 +1,5 @@
 from .api import Cat, Brands, Goods
-from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer
+from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer, ProductSkuSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
 
@@ -22,15 +22,28 @@ class GetCategoryProducts(ListAPIView):
         return queryset
 
 
-class GetProductWithCategory(RetrieveAPIView):
+class GetProductSlugWithCategory(RetrieveAPIView):
     serializer_class = ProductSerializer
 
     def get_object(self):
         category_slug = self.kwargs['category_slug']
         product_slug = self.kwargs['product_slug']
-        obj = Goods().slug_product(product_slug=product_slug, category_slug=category_slug)
+        obj = Goods().get_product_by_slug(product_slug=product_slug, category_slug=category_slug)
         return obj
 
 
+class GetProductWithId(RetrieveAPIView):
+    serializer_class = ProductSerializer
 
+    def get_object(self):
+        obj = Goods().get_product_by_id(self.kwargs['id'])
+        return obj
+
+
+class GetSkuWithId(RetrieveAPIView):
+    serializer_class = ProductSkuSerializer
+
+    def get_object(self):
+        obj = Goods().get_sku_by_id(self.kwargs['id'])
+        return obj
 

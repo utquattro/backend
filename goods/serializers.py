@@ -30,7 +30,6 @@ class CharacteristicSerializer(serializers.ModelSerializer):
         fields = ['name', 'value']
 
 
-
 class CharacteristicListSerializer(serializers.Serializer):
     char = CharacteristicSerializer(many=True)
     name = serializers.SerializerMethodField()
