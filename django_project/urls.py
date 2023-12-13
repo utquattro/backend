@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import django.contrib.auth.urls
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -35,7 +36,8 @@ schema_view = get_schema_view(  # new
     ),
     # url=f'{settings.APP_URL}/api/v3/',
     patterns=[path('api/', include('goods.urls')),
-              path('api/', include('shop_settings.urls'))],
+              path('api/', include('shop_settings.urls')),
+              path('api/', include('cart.urls'))],
     public=True)
 
 urlpatterns = [
@@ -54,7 +56,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/', include('goods.urls')),
-    path('api/', include('shop_settings.urls'))
+    path('api/', include('shop_settings.urls')),
+    path('api/', include('cart.urls')),
+    path('accounts', include("django.contrib.auth.urls"))
 ]
 
 if settings.DEBUG:

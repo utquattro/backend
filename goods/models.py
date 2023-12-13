@@ -36,8 +36,6 @@ class Categorie(BaseModel):
         ordering = ['id']
 
 
-
-
 class CharacteristicName(BaseModel):
     name = models.CharField(max_length=50, unique=True, blank=False,
                             verbose_name='Имя характеристики')
@@ -47,7 +45,6 @@ class CharacteristicName(BaseModel):
 
     class Meta:
         ordering = ['name']
-
 
 
 class CharacteristicValue(BaseModel):
