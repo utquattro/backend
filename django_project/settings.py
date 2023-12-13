@@ -140,8 +140,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
-CSRF_TRUSTED_ORIGINS = ['localhost']
-CSRF_USE_SESSIONS = True
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://89.108.114.139/']
+CSRF_USE_SESSIONS = False
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 CART_SESSION_ID = 'cart'
