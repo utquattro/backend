@@ -3,7 +3,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from .api import CartObj
 from goods.api import Goods
-from .serializers import CartAddItemSerializer, CartSerializer
+from .serializers import CartAddItemSerializer, CartSerializer, CartItemSkuSerializer, CartItemSerializer
 
 
 class CartDetailAPIView(RetrieveAPIView):
@@ -13,16 +13,18 @@ class CartDetailAPIView(RetrieveAPIView):
         try:
             new_cart = CartObj(request)
             cart_list = []
-            print()
-            for i in new_cart:
-                cart_list.append(i)
-            if cart_list:
-                resp = {
-                    'items': cart_list,
-                    'items_count': len(new_cart),
-                    'total_price': new_cart.get_total_price()
-                }
-                return Response(resp)
+            if len(new_cart) > 0:
+                for i in new_cart:
+                    cart_list.append(i)
+                if cart_list:
+                    resp = {
+                        'items': cart_list,
+                        'items_count': len(new_cart),
+                        'total_price': new_cart.get_total_price()
+                    }
+                    return Response(resp, status=200)
+            return Response({'code': "900",
+                             'message': "cart is empty"}, status=200)
         except Exception as e:
             return Response({'error': 777, 'message': str(e)}, status=400)
 
