@@ -22,9 +22,6 @@ class CartDetailAPIView(RetrieveAPIView):
                     'items_count': len(new_cart),
                     'total_price': new_cart.get_total_price()
                 }
-                print(resp)
-                serializer = CartSerializer(data=resp)
-                print(serializer.is_valid())
                 return Response(resp)
         except Exception as e:
             return Response({'error': 777, 'message': str(e)}, status=400)
@@ -44,7 +41,8 @@ def cart_add(request):
             if product:
                 if quantity <= product.stock:
                     new_cart.add(product=product, quantity=quantity, update_quantity=True)
-                    return Response(dict(message=f"ok", cart=new_cart.cart), status=200)
+                    ff = CartDetailAPIView().retrieve(request).data
+                    return Response(ff, status=200)
                 return Response({'error': 1001, 'message': f"Переданное количество больше чем есть на складе"},
                                 status=400)
             return Response({'error': f'product:{product} not found'})
@@ -61,7 +59,8 @@ def cart_remove(request):
         product = Goods().get_sku_by_id(sku_id=request.data['product_sku_id'])
         if product:
             new_cart.remove(product)
-            return Response(dict(message=f"ok", cart=new_cart.cart), status=200)
+            ff = CartDetailAPIView().retrieve(request).data
+            return Response(ff, status=200)
         return Response({'error'})
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
