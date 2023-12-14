@@ -15,12 +15,17 @@ class CartProductSkuSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.Serializer):
+    product_sku = CartProductSkuSerializer()
+    quantity = serializers.IntegerField(min_value=1)
+
+
+class CartAddItemSerializer(serializers.Serializer):
     product_sku_id = serializers.IntegerField()
     quantity = serializers.IntegerField(min_value=1)
 
 
 class CartSerializer(serializers.Serializer):
-    cart = CartItemSerializer(many=True)
+    items = CartItemSerializer(many=True)
     items_count = serializers.IntegerField()
     total_price = serializers.DecimalField(max_digits=10, decimal_places=2)
 

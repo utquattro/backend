@@ -63,6 +63,7 @@ class CartObj(object):
         return sum(Decimal(item['product_sku']['price']) * item['quantity'] for item in
                    self.cart.values())
 
+
     def clear(self):
         # удаление корзины из сессии
         del self.session[settings.CART_SESSION_ID]
@@ -78,10 +79,7 @@ class CartObj(object):
         for product in sku_products:
             product_sku_data = CartProductSkuSerializer(product).data
             product_sku_data['title'] = str(Goods().get_title(sku_id=product.id))
-            print('data', self.cart[str(product.id)])
             self.cart[str(product.id)]['product_sku'] = product_sku_data
 
         for item in self.cart.values():
-            print('item ', item)
-
             yield item

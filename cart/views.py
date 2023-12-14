@@ -1,15 +1,40 @@
 from rest_framework.decorators import api_view
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from .api import CartObj
 from goods.api import Goods
-from .serializers import CartItemSerializer
+from .serializers import CartAddItemSerializer, CartSerializer
+
+
+class CartDetailAPIView(RetrieveAPIView):
+    serializer_class = CartSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            new_cart = CartObj(request)
+            cart_list = []
+            print()
+            for i in new_cart:
+                cart_list.append(i)
+            if cart_list:
+                resp = {
+                    'items': cart_list,
+                    'items_count': len(new_cart),
+                    'total_price': new_cart.get_total_price()
+                }
+                print(resp)
+                serializer = CartSerializer(data=resp)
+                print(serializer.is_valid())
+                return Response(resp)
+        except Exception as e:
+            return Response({'error': 777, 'message': str(e)}, status=400)
 
 
 @api_view(['POST'])
 def cart_add(request):
     try:
         new_cart = CartObj(request)
-        serializer = CartItemSerializer(data=request.data)
+        serializer = CartAddItemSerializer(data=request.data)
         if serializer.is_valid():
             valid_data = serializer.data
             sku_id = valid_data['product_sku_id']
@@ -27,25 +52,6 @@ def cart_add(request):
         return Response(serializer.errors, status=400)
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
-
-
-@api_view(['GET'])
-def cart_detail(request):
-    try:
-        new_cart = CartObj(request)
-        cart_list = []
-        for i in new_cart:
-            cart_list.append(i)
-        if cart_list:
-            return Response({'cart': {
-                'items': cart_list,
-                'items_count': len(new_cart),
-                'total_price': new_cart.get_total_price()
-            }})
-        return Response({'cart': {}})
-
-    except Exception as e:
-        return Response({'error': 777, 'message': str(e)}, status=400)
 
 
 @api_view(['POST'])
