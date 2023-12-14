@@ -46,4 +46,3 @@ class GetSkuWithId(RetrieveAPIView):
     def get_object(self):
         obj = Goods().get_sku_by_id(self.kwargs['id'])
         return obj
-

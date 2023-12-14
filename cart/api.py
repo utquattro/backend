@@ -1,10 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
-from goods.models import ProductSku
-from .models import Cart, CartItem
-from django.shortcuts import get_object_or_404, get_list_or_404
-from django.contrib.sessions.models import Session
-from django.contrib.sessions.backends.db import SessionStore
+from goods.api import Goods
+from .serializers import CartProductSkuSerializer
 
 
 class CartObj(object):
@@ -58,6 +55,14 @@ class CartObj(object):
         """
         return sum(item['quantity'] for item in self.cart.values())
 
+    def get_total_price(self):
+        """
+        Подсчет стоимости товаров в корзине.
+        """
+
+        return sum(Decimal(item['product_sku']['price']) * item['quantity'] for item in
+                   self.cart.values())
+
     def clear(self):
         # удаление корзины из сессии
         del self.session[settings.CART_SESSION_ID]
@@ -69,12 +74,14 @@ class CartObj(object):
         """
         product_ids = self.cart.keys()
         # получение объектов product и добавление их в корзину
-        products = ProductSku.objects.filter(id__in=product_ids)
-        for product in products:
-            self.cart[str(product.id)]['product'] = product
+        sku_products = Goods().get_skus_by_ids(product_ids)
+        for product in sku_products:
+            product_sku_data = CartProductSkuSerializer(product).data
+            product_sku_data['title'] = str(Goods().get_title(sku_id=product.id))
+            print('data', self.cart[str(product.id)])
+            self.cart[str(product.id)]['product_sku'] = product_sku_data
 
         for item in self.cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_quantity'] = item['quantity']
-            yield item
+            print('item ', item)
 
+            yield item

@@ -1,24 +1,26 @@
 from rest_framework import serializers
-from .models import CartItem, Cart
 from goods.models import ProductSku
 
 
-class CartItemSerializer(serializers.ModelSerializer):
+class ProductSkuIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductSku
-        fields = ('id', 'stock')
+        fields = ('id',)
 
 
-class CartSerializer(serializers.ModelSerializer):
-    cart_items = CartItemSerializer(many=True)
-
+class CartProductSkuSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cart
-        fields = ('session', 'cart_items')
+        model = ProductSku
+        fields = ('id', 'sku', 'img_url', 'price', 'stock')
 
-    def create(self, validated_data):
-        cart_items_data = validated_data.pop('cart_items')
-        cart = Cart.objects.create(**validated_data)
-        for cart_item_data in cart_items_data:
-            CartItem.objects.create(cart=cart, **cart_item_data)
-        return cart
+
+class CartItemSerializer(serializers.Serializer):
+    product_sku_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+
+class CartSerializer(serializers.Serializer):
+    cart = CartItemSerializer(many=True)
+    items_count = serializers.IntegerField()
+    total_price = serializers.DecimalField(max_digits=10, decimal_places=2)
+
