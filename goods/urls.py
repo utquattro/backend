@@ -10,5 +10,6 @@ urlpatterns = [
     path('category/<slug:category_slug>/<slug:product_slug>/', GetProductSlugWithCategory.as_view()),
     path('product/<int:id>/', GetProductWithId.as_view()),
 
+
 ]
 

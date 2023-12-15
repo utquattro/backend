@@ -10,6 +10,7 @@ class CartObj(object):
         """
         Инициализируем корзину
         """
+        print(request)
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
