@@ -23,7 +23,6 @@ class CharacteristicNameAdmin(BaseAdmin):
         'created_at', 'updated_at', 'active')
 
 
-
 class CharacteristicValueAdmin(BaseAdmin):
     """"""
     list_display = (
@@ -36,6 +35,7 @@ class CharacteristicsAdmin(BaseAdmin):
     list_display = (
         'id', 'name',  'value',
         'created_at', 'updated_at', 'active')
+
 
 class CategorieAdmin(BaseAdmin):
     """
@@ -70,5 +70,5 @@ admin.site.register(ProductSku, ProductItemAdmin)
 admin.site.register(CharacteristicName, CharacteristicNameAdmin)
 admin.site.register(CharacteristicValue, CharacteristicValueAdmin)
 admin.site.register(Characteristic, CharacteristicsAdmin)
-
 admin.site.register(Brand, BrandAdmin)
+

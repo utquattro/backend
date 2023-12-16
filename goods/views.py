@@ -22,6 +22,21 @@ class GetCategoryProducts(ListAPIView):
         return queryset
 
 
+class GetFindProducts(ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        active_products = Goods().active_products
+        search_query = self.request.query_params.get('search')
+        if search_query:
+            queryset = active_products.filter(name__icontains=search_query)
+
+        else:
+            queryset = active_products
+
+        return queryset
+
+
 class GetProductSlugWithCategory(RetrieveAPIView):
     serializer_class = ProductSerializer
 
