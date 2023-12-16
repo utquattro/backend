@@ -5,5 +5,6 @@ urlpatterns = [
     path('cart/', CartDetailAPIView.as_view()),
     path('cart/add/', cart_add),
     path('cart/remove/', cart_remove),
+
 ]
 

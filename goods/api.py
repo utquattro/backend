@@ -27,6 +27,11 @@ class Goods:
         queryset = get_list_or_404(self.active_products.filter(category__slug=category_slug))
         return queryset
 
+
+    def find_products_by_text(self, category_slug):
+        queryset = get_list_or_404(self.active_products.filter(category__slug=category_slug))
+        return queryset
+
     def get_product_by_slug(self, product_slug, category_slug):
         product = get_object_or_404(self.active_products, slug=product_slug, category__slug=category_slug)
         return product
