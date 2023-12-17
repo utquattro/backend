@@ -1,8 +1,10 @@
 from .api import Cat, Brands, Goods
-from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer, ProductSkuSerializer
+from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer, \
+    ProductSkuSerializer, CharacteristicListSerializer, CharacteristicSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
-
+import json
+from rest_framework.response import Response
 
 class GetAllBrands(ListAPIView):
     queryset = Brands().active_brand
@@ -23,18 +25,21 @@ class GetCategoryProducts(ListAPIView):
 
 
 class GetFindProducts(ListAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductSkuSerializer
 
     def get_queryset(self):
-        active_products = Goods().active_products
         search_query = self.request.query_params.get('search')
+        find_product = []
+        for i in Goods().active_products.filter(name__icontains=search_query):
+            find_product.append(i.pk)
         if search_query:
-            queryset = active_products.filter(name__icontains=search_query)
-
+            queryset = Goods().active_sku.filter(characteristics__value__value__icontains=search_query) | \
+                       Goods().active_sku.filter(sku__icontains=search_query) | \
+                       Goods().active_sku.filter(product_skus__in=find_product)
         else:
-            queryset = active_products
+            return None
 
-        return queryset
+        return queryset.distinct()
 
 
 class GetProductSlugWithCategory(RetrieveAPIView):
