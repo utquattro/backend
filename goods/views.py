@@ -43,11 +43,13 @@ def search_product(request):
             serializer = ProductSkuSerializer(queryset_sort, many=True)
             serialized_data = serializer.data
             f = []
+
             for i in serialized_data:
                 i['title'] = Goods().get_title(sku_id=i['id'])
                 f.append(i)
-
-            return Response(f)
+            if len(f) > 1:
+                return Response(f)
+            return Response({'message': 'not found'}, status=404)
         return Response({'error'})
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
