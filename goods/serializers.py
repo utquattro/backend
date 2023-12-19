@@ -29,21 +29,21 @@ class CharacteristicSerializer(serializers.ModelSerializer):
         model = Characteristic
         fields = ['name', 'value']
 
-
-class CharacteristicListSerializer(serializers.Serializer):
-    char = CharacteristicSerializer(many=True)
-    name = serializers.SerializerMethodField()
-
-    def get_name(self, obj):
-        return obj['name'].name
-
-
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductSku
         fields = ('id', 'sku', 'description', 'img_url', 'price', 'stock', 'characteristics', 'active',)
+
+
+
+class ProductSkuSearchSerializer(serializers.ModelSerializer):
+    characteristics = CharacteristicSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ProductSku
+        fields = ('id', 'sku', 'img_url', 'price', 'stock', 'characteristics', 'active',)
 
 
 class ProductSerializer(serializers.ModelSerializer):
