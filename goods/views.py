@@ -22,8 +22,8 @@ class GetAllCategory(ListAPIView):
 @api_view(['GET'])
 def search_product(request):
     try:
+        search_query = request.query_params.get('search')
         if len(request.query_params.get('search')) >= 2:
-            search_query = request.query_params.get('search')
             find_product = []
             brand_id = []
             if search_query:
@@ -45,19 +45,26 @@ def search_product(request):
                 serializer = ProductSkuSerializer(queryset_sort, many=True)
                 serialized_data = serializer.data
                 f = []
-
+                host = str('http://'+request.get_host())
                 for i in serialized_data:
                     i['title'] = Goods().get_title(sku_id=i['id'])
+                    if i['img_url']:
+                        i['img_url'] = host + i['img_url']
+                        print(i)
                     f.append(i)
                 if len(f) > 1:
+                    #print(f)
+                    #print('asd:', request.get_host())
                     return Response(f)
                 return Response({'message': 'not found'}, status=404)
         return Response({'error': 2002,
-                         'message': 'shot query request( query len >= 2'}, status=404)
+                         'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
 
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
 
+    except TypeError as e:
+        return Response({'error': str(e)}, status=400)
 
 class GetCategoryProducts(ListAPIView):
     serializer_class = ProductSerializer
