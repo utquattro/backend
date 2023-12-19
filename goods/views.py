@@ -8,6 +8,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+
 class GetAllBrands(ListAPIView):
     queryset = Brands().active_brand
     serializer_class = BrandSerializer
@@ -21,36 +22,39 @@ class GetAllCategory(ListAPIView):
 @api_view(['GET'])
 def search_product(request):
     try:
-        search_query = request.query_params.get('search')
-        find_product = []
-        brand_id = []
-        if search_query:
-            name = Goods().active_products.filter(name__icontains=search_query)
-            for i in name:
-                find_product.append(i.pk)
-            brand = Brands().active_brand.filter(name__icontains=search_query)
-            for j in brand:
-                brand_id.append(j.pk)
-            product_by_brand = Goods().active_products.filter(brand__in=brand_id)
+        if len(request.query_params.get('search')) >= 2:
+            search_query = request.query_params.get('search')
+            find_product = []
+            brand_id = []
+            if search_query:
+                name = Goods().active_products.filter(name__icontains=search_query)
+                for i in name:
+                    find_product.append(i.pk)
+                brand = Brands().active_brand.filter(name__icontains=search_query)
+                for j in brand:
+                    brand_id.append(j.pk)
+                product_by_brand = Goods().active_products.filter(brand__in=brand_id)
 
-            char = Goods().active_sku.filter(characteristics__value__value__icontains=search_query)
-            sku = Goods().active_sku.filter(sku__icontains=search_query)
-            product_name = Goods().active_sku.filter(product_skus__in=find_product)
-            by_brand = Goods().active_sku.filter(product_skus__in=product_by_brand)
+                char = Goods().active_sku.filter(characteristics__value__value__icontains=search_query)
+                sku = Goods().active_sku.filter(sku__icontains=search_query)
+                product_name = Goods().active_sku.filter(product_skus__in=find_product)
+                by_brand = Goods().active_sku.filter(product_skus__in=product_by_brand)
 
-            queryset = char | sku | product_name | by_brand
-            queryset_sort = queryset.distinct()
-            serializer = ProductSkuSerializer(queryset_sort, many=True)
-            serialized_data = serializer.data
-            f = []
+                queryset = char | sku | product_name | by_brand
+                queryset_sort = queryset.distinct()
+                serializer = ProductSkuSerializer(queryset_sort, many=True)
+                serialized_data = serializer.data
+                f = []
 
-            for i in serialized_data:
-                i['title'] = Goods().get_title(sku_id=i['id'])
-                f.append(i)
-            if len(f) > 1:
-                return Response(f)
-            return Response({'message': 'not found'}, status=404)
-        return Response({'error'})
+                for i in serialized_data:
+                    i['title'] = Goods().get_title(sku_id=i['id'])
+                    f.append(i)
+                if len(f) > 1:
+                    return Response(f)
+                return Response({'message': 'not found'}, status=404)
+        return Response({'error': 2002,
+                         'message': 'shot query request( query len >= 2'}, status=404)
+
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
 
@@ -61,7 +65,6 @@ class GetCategoryProducts(ListAPIView):
     def get_queryset(self):
         queryset = Goods().products_by_category_slug(self.kwargs['category_slug'])
         return queryset
-
 
 
 class GetProductSlugWithCategory(RetrieveAPIView):
