@@ -67,6 +67,10 @@ class Characteristic(BaseModel):
     def __str__(self):
         return str(self.name) + " " + str(self.value)
 
+    def get_char_value(self):
+        return f"{self.value}"
+
+
     class Meta:
         unique_together = ('name', 'value')
         ordering = ['name']
@@ -92,6 +96,14 @@ class ProductSku(BaseModel):
 
     def __str__(self):
         return self.sku
+
+    def save(self, *args, **kwargs):
+        self.title = f"{self.brand} {self.name}"
+        for i in self.characteristics.all():
+           self.title = f"{self.title} {i.get_char_value()}"
+
+        print(self.title)
+        super(ProductSku, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
