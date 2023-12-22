@@ -74,6 +74,11 @@ class Characteristic(BaseModel):
 
 class ProductSku(BaseModel):
     """"""
+    name = models.TextField(max_length=250, null=True, verbose_name='Название продукта')
+    title = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание артикула товара')
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
+    category = models.ForeignKey(Categorie, null=True, on_delete=models.CASCADE, verbose_name='Категория')
+    slug = models.SlugField(max_length=255, unique=True, null=True, db_index=True, verbose_name="URL")
     sku = models.TextField(max_length=100, blank=False, null=True, unique=True,
                            verbose_name='Артикул товара')
     characteristics = models.ManyToManyField(Characteristic, related_name="sku_char")
@@ -82,10 +87,14 @@ class ProductSku(BaseModel):
     stock = models.PositiveIntegerField(blank=False, null=True, validators=[MinValueValidator(0)],
                                         verbose_name='Остаток')
     description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание артикула товара')
+
     img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
 
     def __str__(self):
         return self.sku
+
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['sku']

@@ -32,7 +32,7 @@ class Goods:
         return queryset
 
     def get_product_by_slug(self, product_slug, category_slug):
-        product = get_object_or_404(self.active_products, slug=product_slug, category__slug=category_slug)
+        product = get_object_or_404(self.active_sku, slug=product_slug, category__slug=category_slug)
         return product
 
     def get_product_by_id(self, product_id):

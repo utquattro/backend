@@ -34,7 +34,8 @@ class ProductSkuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductSku
-        fields = ('id', 'sku', 'description', 'img_url', 'price', 'stock', 'characteristics', 'active',)
+        fields = ('id', 'name', 'category', 'title', 'slug',  'brand', 'sku', 'description',
+                  'img_url', 'price', 'stock', 'characteristics', 'active',)
 
 
 
@@ -76,4 +77,5 @@ class CategorieNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorie
         fields = ('id', 'name', 'slug', 'img_url', 'active',)
+
 

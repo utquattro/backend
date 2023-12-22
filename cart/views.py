@@ -38,7 +38,6 @@ def cart_add(request):
             valid_data = serializer.data
             sku_id = valid_data['product_sku_id']
             quantity = valid_data['quantity']
-            print('yes')
             product = Goods().get_sku_by_id(sku_id=sku_id)
             if product:
                 if quantity <= product.stock:
@@ -48,7 +47,6 @@ def cart_add(request):
                 return Response({'error': 1001, 'message': f"Переданное количество больше чем есть на складе"},
                                 status=400)
             return Response({'error': f'product:{product} not found'})
-        print('ops', serializer.data)
         return Response(serializer.errors, status=400)
     except KeyError as e:
         return Response({'error': str(e)}, status=400)
