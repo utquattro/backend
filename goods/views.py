@@ -30,25 +30,24 @@ class SearchProduct(GenericAPIView):
         if self.request.query_params.get('id'):
             product_id = self.request.query_params.get('id')
             queryset = Goods().get_product_by_id(product_id=product_id)
-            serializer_class = ProductSkuSerializer(queryset, read_only=True)
-            f = serializer_class.data
-            print(f)
-            #product = Goods().active_products.filter(id=self.request.query_params.get('id'))
-            return Response(serializer_class.data, status=200)
-        #sd = self.request.query_params.items()
-
-        search_query = self.request.query_params.get('search')
-        if len(search_query) >= 2:
-            queryset = Goods().find_products_by_text(src_text=search_query)
-            serializer_class = ProductSkuSerializer(queryset, many=True, read_only=True)
-
-            for i in serializer_class.data:
-                i['img_url'] = f"http://{request.META['HTTP_HOST']}{i['img_url']}"
+            serializer_class = ProductSkuSerializer(queryset)
+            data = serializer_class.data
+            data['img_url'] = f"http://{request.META['HTTP_HOST']}{data['img_url']}"
+            return Response(data, status=200)
 
 
-            return Response(serializer_class.data, status=200)
-        return Response({'error': 2002,
+        elif self.request.query_params.get('search'):
+            search_query = self.request.query_params.get('search')
+            if len(search_query) >= 2:
+                queryset = Goods().find_products_by_text(src_text=search_query)
+                serializer_class = ProductSkuSerializer(queryset, many=True, read_only=True)
+                for i in serializer_class.data:
+                    i['img_url'] = f"http://{request.META['HTTP_HOST']}{i['img_url']}"
+                return Response(serializer_class.data, status=200)
+            return Response({'error': 2002,
                          'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
+        else:
+            return Response({'message':'not valid queryparams'}, status=400)
 
 
 
