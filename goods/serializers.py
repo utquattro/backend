@@ -31,7 +31,7 @@ class CharacteristicSerializer(serializers.ModelSerializer):
 
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
-
+    category = serializers.CharField()
     class Meta:
         model = ProductSku
         fields = ('id', 'name', 'category', 'title', 'slug',  'brand', 'sku', 'description',
