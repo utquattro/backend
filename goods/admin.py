@@ -59,7 +59,7 @@ class ProductAdmin(BaseAdmin):
 
 class ProductItemAdmin(BaseAdmin):
     list_display = (
-        'id', 'sku', 'price', 'stock', 'description', 'img_url',
+        'id', 'sku', 'category', 'brand', 'price', 'stock',  'description', 'img_url',
         'created_at', 'updated_at', 'active')
     pass
 
