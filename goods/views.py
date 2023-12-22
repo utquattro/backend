@@ -18,55 +18,22 @@ class GetAllSlider(ListAPIView):
     queryset = Brands().active_brand
     serializer_class = BrandSerializer
 
-
-
 class GetAllCategory(ListAPIView):
     queryset = Cat().active_category
     serializer_class = CategorieSerializer
 
 
-@api_view(['GET'])
-def get_product(request):
-    try:
-        search_query = request.query_params.get('id')
-        product_sku_id = Goods().get_product_by_id(search_query)
-        return Response({'message': product_sku_id}, status=404)
-    except KeyError as e:
-        return Response({'error': str(e)}, status=400)
 
-    except TypeError as e:
-        return Response({'error': str(e)}, status=400)
-
-
-@api_view(['GET'])
-def search_product(request):
-    try:
-        search_query = request.query_params.get('search')
-        if len(request.query_params.get('search')) >= 2:
-            queryset_sort = Goods().find_products_by_text(f"{search_query}")
-            serializer = ProductSkuSerializer(queryset_sort, many=True)
-            serialized_data = serializer.data
-            f = []
-            host = str('http://' + request.get_host())
-            for i in serialized_data:
-                i['title'] = Goods().get_title(sku_id=i['id'])
-                if i['img_url']:
-                    i['img_url'] = host + i['img_url']
-                    print(i)
-                f.append(i)
-            if len(f) > 1:
-                # print(f)
-                # print('asd:', request.get_host())
-                return Response(f)
-            return Response({'message': 'not found'}, status=404)
+class SearchProduct(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        search_query = self.request.query_params.get('search')
+        if len(search_query) >= 2:
+            queryset = Goods().find_products_by_text(src_text=search_query)
+            serializer_class = ProductSkuSerializer(queryset, many=True)
+            return Response(serializer_class.data, status=200)
         return Response({'error': 2002,
                          'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
 
-    except KeyError as e:
-        return Response({'error': str(e)}, status=400)
-
-    except TypeError as e:
-        return Response({'error': str(e)}, status=400)
 
 
 class GetCategoryProducts(ListAPIView):
@@ -98,11 +65,3 @@ class GetProductWithId(RetrieveAPIView):
 
         return product_sku
 
-
-
-class GetSkuWithId(RetrieveAPIView):
-    serializer_class = ProductSkuSerializer
-
-    def get_object(self):
-        obj = Goods().get_sku_by_id(self.kwargs['id'])
-        return obj

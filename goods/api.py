@@ -28,7 +28,7 @@ class Goods:
         return queryset
 
     def find_products_by_text(self, src_text):
-        queryset = get_list_or_404(self.active_products.filter(name__icontains=src_text))
+        queryset = get_list_or_404(self.active_sku.filter(title__icontains=src_text))
         return queryset
 
     def get_product_by_slug(self, product_slug, category_slug):
