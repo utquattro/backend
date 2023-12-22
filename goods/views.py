@@ -1,6 +1,5 @@
 from .api import Cat, Brands, Goods
-from .serializers import BrandSerializer, CategorieSerializer, ProductSerializer, \
-    ProductSkuSerializer, CharacteristicSerializer
+from .serializers import BrandSerializer, CategorieSerializer, ProductSkuSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
 import json

@@ -1,6 +1,6 @@
-from .models import Categorie, Brand, Product, ProductSku
+from .models import Categorie, Brand, ProductSku
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .serializers import ProductSerializer, ProductSkuSerializer
+from .serializers import  ProductSkuSerializer
 
 class Brands:
     def __init__(self):
@@ -20,7 +20,7 @@ class Cat:
 
 class Goods:
     def __init__(self):
-        self.active_products = Product.active_objects
+        self.active_products = ProductSku.active_objects
         self.active_sku = ProductSku.active_objects
 
     def products_by_category_slug(self, category_slug):
@@ -50,7 +50,7 @@ class Goods:
     def get_title(self, sku_id):
         product_sku = get_object_or_404(self.active_sku, id=sku_id)
         product = get_object_or_404(self.active_products, skus__id = sku_id)
-        serializer_product = ProductSerializer(product)
+        serializer_product = ProductSkuSerializer(product)
         serializer_sku = ProductSkuSerializer(product_sku)
         full_name = f"{str(serializer_product.data['brand'])} {str(serializer_product.data['name'])}"
         characteristics = serializer_sku.data['characteristics']

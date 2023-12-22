@@ -112,23 +112,4 @@ class ProductSku(BaseModel):
         ordering = ['sku']
 
 
-class Product(BaseModel):
-    """"""
-    name = models.TextField(max_length=250, blank=False, verbose_name='Название продукта')
-    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Категория')
-    skus = models.ManyToManyField(ProductSku,   related_name="product_skus", blank=True)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
-    description = models.TextField(max_length=500, blank=True, null=True, verbose_name='Описание товара')
-    img_url = models.ImageField(blank=True, upload_to='images/goods/product', )
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('product_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['name']
-
 
