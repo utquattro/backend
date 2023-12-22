@@ -27,6 +27,16 @@ class SearchProduct(GenericAPIView):
     serializer_class = ProductSkuSerializer
 
     def get(self, request, *args, **kwargs):
+        if self.request.query_params.get('id'):
+            product_id = self.request.query_params.get('id')
+            queryset = Goods().get_product_by_id(product_id=product_id)
+            serializer_class = ProductSkuSerializer(queryset, read_only=True)
+            f = serializer_class.data
+            print(f)
+            #product = Goods().active_products.filter(id=self.request.query_params.get('id'))
+            return Response(serializer_class.data, status=200)
+        #sd = self.request.query_params.items()
+
         search_query = self.request.query_params.get('search')
         if len(search_query) >= 2:
             queryset = Goods().find_products_by_text(src_text=search_query)
