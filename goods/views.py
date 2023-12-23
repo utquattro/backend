@@ -8,18 +8,20 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from cart.serializers import CartItemSkuSerializer
 
+
 class GetAllBrands(ListAPIView):
     queryset = Brands().active_brand
     serializer_class = BrandSerializer
 
 
 class GetAllSlider(ListAPIView):
-    queryset = Brands().active_brand
     serializer_class = BrandSerializer
+    queryset = Brands().active_brand
+
 
 class GetAllCategory(ListAPIView):
-    queryset = Cat().active_category
     serializer_class = CategorieSerializer
+    queryset = Cat().active_category
 
 
 class SearchProduct(GenericAPIView):
@@ -34,6 +36,12 @@ class SearchProduct(GenericAPIView):
             data['img_url'] = f"http://{request.META['HTTP_HOST']}{data['img_url']}"
             return Response(data, status=200)
 
+        elif self.request.query_params.get('category'):
+            category_slug = self.request.query_params.get('category')
+            queryset = Goods().products_by_category_slug(category_slug=category_slug)
+            serializer_class = ProductSkuSerializer(queryset, many=True, read_only=True)
+            data = serializer_class.data
+            return Response(data, status=200)
 
         elif self.request.query_params.get('search'):
             search_query = self.request.query_params.get('search')
@@ -44,10 +52,9 @@ class SearchProduct(GenericAPIView):
                     i['img_url'] = f"http://{request.META['HTTP_HOST']}{i['img_url']}"
                 return Response(serializer_class.data, status=200)
             return Response({'error': 2002,
-                         'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
+                             'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
         else:
-            return Response({'message':'not valid queryparams'}, status=400)
-
+            return Response({'message': 'not valid queryparams'}, status=400)
 
 
 class GetCategoryProducts(ListAPIView):
@@ -74,8 +81,5 @@ class GetProductWithId(RetrieveAPIView):
 
     def get_queryset(self):
         product_sku_id = self.kwargs['pk']
-
         product_sku = Goods().active_sku.filter(id=product_sku_id)
-
         return product_sku
-

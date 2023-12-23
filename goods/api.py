@@ -28,27 +28,27 @@ class Goods:
         return queryset
 
     def find_products_by_text(self, src_text):
-        queryset = get_list_or_404(self.active_sku.filter(title__icontains=src_text))
+        queryset = get_list_or_404(self.active_products.filter(title__icontains=src_text))
         return queryset
 
     def get_product_by_slug(self, product_slug, category_slug):
-        product = get_object_or_404(self.active_sku, slug=product_slug, category__slug=category_slug)
+        product = get_object_or_404(self.active_products, slug=product_slug, category__slug=category_slug)
         return product
 
     def get_product_by_id(self, product_id):
-        product = get_object_or_404(self.active_sku, id=product_id)
+        product = get_object_or_404(self.active_products, id=product_id)
         return product
 
     def get_sku_by_id(self, sku_id: int):
-        sku = get_object_or_404(self.active_sku, pk=sku_id)
+        sku = get_object_or_404(self.active_products, pk=sku_id)
         return sku
 
     def get_skus_by_ids(self, product_ids):
-        products = get_list_or_404(self.active_sku.filter(id__in=product_ids))
+        products = get_list_or_404(self.active_products.filter(id__in=product_ids))
         return products
 
     def get_title(self, sku_id):
-        product_sku = get_object_or_404(self.active_sku, id=sku_id)
+        product_sku = get_object_or_404(self.active_products, id=sku_id)
         product = get_object_or_404(self.active_products, skus__id = sku_id)
         serializer_product = ProductSkuSerializer(product)
         serializer_sku = ProductSkuSerializer(product_sku)
