@@ -29,24 +29,26 @@ class CharacteristicSerializer(serializers.ModelSerializer):
         model = Characteristic
         fields = ['name', 'value']
 
+
+class CategorieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categorie
+        fields = ('id', 'name', 'slug', 'img_url', 'active',)
+
+
+class CategorieProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categorie
+        fields = ('id', 'name', 'slug')
+
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
-    category = serializers.CharField()
+    category = CategorieProductSerializer()
     class Meta:
         model = ProductSku
         fields = ('id', 'name', 'category', 'title', 'slug',  'brand', 'sku', 'description',
                   'img_url', 'price', 'stock', 'characteristics', 'active',)
 
 
-
-
-
-
-class CategorieSerializer(serializers.ModelSerializer):
-    characteristics = CharacteristicSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Categorie
-        fields = ('id', 'name', 'slug', 'characteristics', 'img_url', 'active',)
 
 
