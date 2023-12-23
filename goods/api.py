@@ -36,7 +36,7 @@ class Goods:
         return product
 
     def get_product_by_id(self, product_id):
-        product = get_object_or_404(self.active_products, id=product_id)
+        product = get_object_or_404(self.active_products, pk=product_id)
         return product
 
     def get_sku_by_id(self, sku_id: int):
