@@ -27,7 +27,7 @@ class Categorie(BaseModel):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
-        return self.slug
+        return self.name
 
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
