@@ -65,11 +65,13 @@ class Characteristic(BaseModel):
                               verbose_name='Значение характеристики')
 
     def __str__(self):
-        return str(self.name) + " " + str(self.value)
+        return f"{self.name} {self.value}"
 
     def get_char_value(self):
         return f"{self.value}"
 
+    def get_char_name(self):
+        return f"{self.name}"
 
     class Meta:
         unique_together = ('name', 'value')
@@ -100,7 +102,7 @@ class ProductSku(BaseModel):
     def save(self, *args, **kwargs):
         self.title = f"{self.brand} {self.name}"
         for i in self.characteristics.all()[:2]:
-           self.title = f"{self.title} {i.get_char_value()}"
+            self.title = f"{self.title} {i.get_char_value()}"
         super(ProductSku, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from cart.serializers import CartItemSkuSerializer
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
 
 
@@ -25,7 +25,7 @@ class GetAllSlider(ListAPIView):
 
 class GetAllCategory(ListAPIView):
     serializer_class = CategorieSerializer
-    queryset = Cat().active_category
+    queryset = Cat().list_category()
 
 
 class ProductSkuView(ListAPIView):
@@ -33,6 +33,7 @@ class ProductSkuView(ListAPIView):
 
     def get_queryset(self):
         try:
+            print('hi')
             products = Goods().active_products
             if self.request.GET.get('id'):
                 return products.filter(pk=self.request.GET.get('id'))
@@ -41,43 +42,9 @@ class ProductSkuView(ListAPIView):
             if self.request.GET.get('search'):
                 return products.filter(title__icontains=self.request.GET.get('search'))
             else:
-                return None
+                return Response({1}, status=404)
         except BaseException as e:
             return Response({str(e)})
-
-
-class SearchProduct(generics.ListAPIView):
-    serializer_class = ProductSkuSerializer
-
-    def get_queryset(self, *args, **kwargs):
-        if self.request.query_params.get('id'):
-            product_id = self.request.query_params.get('id')
-            queryset = Goods().get_product_by_id(product_id=product_id)
-            serializer_class = ProductSkuSerializer(queryset)
-            data = serializer_class.data
-            data['img_url'] = str(f"http://{self.request.META['HTTP_HOST']}{data['img_url']}")
-            return data
-
-        elif self.request.query_params.get('category'):
-            category_slug = self.request.query_params.get('category')
-            queryset = Goods().products_by_category_slug(category_slug=category_slug)
-            serializer_class = ProductSkuSerializer(queryset, many=True, read_only=True)
-            data = serializer_class.data
-            return Response(data, status=200)
-
-        elif self.request.query_params.get('search'):
-            search_query = self.request.query_params.get('search')
-            if len(search_query) >= 2:
-                queryset = Goods().find_products_by_text(src_text=search_query)
-                serializer_class = ProductSkuSerializer(queryset, many=True, read_only=True)
-                data = serializer_class.data
-                for i in data:
-                    i['img_url'] = f"http://{self.request.META['HTTP_HOST']}{i['img_url']}"
-                return data
-            return Response({'error': 2002,
-                             'message': f"shot query request :( you request len({search_query})  < 2'"}, status=404)
-        else:
-            return Response({'message': 'not valid queryparams'}, status=400)
 
 
 class GetCategoryProducts(ListAPIView):
