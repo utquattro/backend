@@ -45,6 +45,7 @@ class ProductSkuView(ListAPIView):
         except BaseException as e:
             return Response({str(e)})
 
+
 class SearchProduct(generics.ListAPIView):
     serializer_class = ProductSkuSerializer
 

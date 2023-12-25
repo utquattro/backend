@@ -98,7 +98,6 @@ class ProductSku(BaseModel):
         return self.sku
 
     def save(self, *args, **kwargs):
-
         self.title = f"{self.brand} {self.name}"
         for i in self.characteristics.all()[:2]:
            self.title = f"{self.title} {i.get_char_value()}"
@@ -108,7 +107,7 @@ class ProductSku(BaseModel):
         return reverse('product_detail', kwargs={'slug': self.slug})
 
     class Meta:
-        ordering = ['sku']
+        ordering = ['id']
 
 
 
