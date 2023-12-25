@@ -12,7 +12,7 @@ class BaseAdmin(admin.ModelAdmin):
 class BrandAdmin(BaseAdmin):
     """"""
     list_display = (
-        'id',  'name', 'active', 'description',
+        'id',  'name', 'active', 'description', 'img_url',
         'created_at', 'updated_at', 'active')
 
 
