@@ -98,11 +98,10 @@ class ProductSku(BaseModel):
         return self.sku
 
     def save(self, *args, **kwargs):
-        self.title = f"{self.brand} {self.name}"
-        for i in self.characteristics.all():
-           self.title = f"{self.title} {i.get_char_value()}"
 
-        print(self.title)
+        self.title = f"{self.brand} {self.name}"
+        for i in self.characteristics.all()[:2]:
+           self.title = f"{self.title} {i.get_char_value()}"
         super(ProductSku, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
