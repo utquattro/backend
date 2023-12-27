@@ -41,9 +41,17 @@ class CategorieProductSerializer(serializers.ModelSerializer):
         model = Categorie
         fields = ('id', 'name', 'slug')
 
+
+class BrandProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'name')
+
+
 class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
     category = CategorieProductSerializer(read_only=True)
+    brand = BrandProductSerializer(read_only=True)
 
     class Meta:
         model = ProductSku
