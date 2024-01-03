@@ -52,11 +52,12 @@ class ProductSkuSerializer(serializers.ModelSerializer):
     characteristics = CharacteristicSerializer(many=True, read_only=True)
     category = CategorieProductSerializer(read_only=True)
     brand = BrandProductSerializer(read_only=True)
+    created_at = serializers.DateTimeField(format="%d-%m-%Y-%g")
 
     class Meta:
         model = ProductSku
         fields = ('id', 'name', 'category', 'title', 'slug',  'brand', 'sku', 'description',
-                  'img_url', 'price', 'stock', 'characteristics', 'active',)
+                  'img_url', 'price', 'stock', 'characteristics', 'active', 'created_at')
 
 
 
