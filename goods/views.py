@@ -1,6 +1,6 @@
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-
+from django_filters.rest_framework import DjangoFilterBackend
 from .api import Cat, Brands, Goods
 from .serializers import BrandSerializer, CategorieSerializer, ProductSkuSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
@@ -12,6 +12,7 @@ from rest_framework.decorators import api_view
 from cart.serializers import CartItemSkuSerializer
 from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
+from .service import ProductFilter
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -37,11 +38,10 @@ class GetAllCategory(ListAPIView):
 
 class ProductSkuView(ListAPIView):
     serializer_class = ProductSkuSerializer
-    pagination_class = StandardResultsSetPagination
+    #pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         try:
-            print('hi')
             products = Goods().active_products
             if self.request.GET.get('id'):
                 return products.filter(pk=self.request.GET.get('id'))
@@ -57,7 +57,9 @@ class ProductSkuView(ListAPIView):
 
 class GetCategoryProducts(ListAPIView):
     serializer_class = ProductSkuSerializer
-    pagination_class = StandardResultsSetPagination
+    #pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProductFilter
 
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
