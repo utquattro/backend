@@ -7,7 +7,7 @@ class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
 
 
 class ProductFilter(filters.FilterSet):
-    characteristics = CharFilterInFilter(field_name='characteristics__value', lookup_expr='in')
+    characteristics = CharFilterInFilter(field_name='characteristics__value__value', lookup_expr='in')
     price = filters.RangeFilter()
 
     class Meta:
