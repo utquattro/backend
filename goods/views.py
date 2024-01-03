@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .api import Cat, Brands, Goods
 from .serializers import BrandSerializer, CategorieSerializer, ProductSkuSerializer
