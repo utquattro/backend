@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_swagger',
-    'django_filters',
+
     'goods',
     'stock',
     'cart',
