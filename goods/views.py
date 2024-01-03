@@ -1,3 +1,4 @@
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 
 from .api import Cat, Brands, Goods
@@ -11,6 +12,12 @@ from rest_framework.decorators import api_view
 from cart.serializers import CartItemSkuSerializer
 from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 15
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 class GetAllBrands(ListAPIView):
@@ -30,6 +37,7 @@ class GetAllCategory(ListAPIView):
 
 class ProductSkuView(ListAPIView):
     serializer_class = ProductSkuSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         try:
@@ -49,6 +57,7 @@ class ProductSkuView(ListAPIView):
 
 class GetCategoryProducts(ListAPIView):
     serializer_class = ProductSkuSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
