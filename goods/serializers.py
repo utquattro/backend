@@ -27,7 +27,7 @@ class CharacteristicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Characteristic
-        fields = ['name', 'value']
+        fields = ['id', 'name', 'value']
 
 
 class CategorieSerializer(serializers.ModelSerializer):
