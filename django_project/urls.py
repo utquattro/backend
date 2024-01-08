@@ -59,10 +59,10 @@ urlpatterns = [
     path('api/', include('shop_settings.urls')),
     path('api/', include('cart.urls')),
     path('accounts', include("django.contrib.auth.urls")),
-    path('api/login', login),
-    path('api/test_token', test_token),
-    path('api/signup', signup),
-    path('api/sendsms', send_sms),
+    path('api/login/', login),
+    path('api/test_token/', test_token),
+    path('api/signup/', signup),
+    path('api/sendsms/', send_sms),
 ]
 
 if settings.DEBUG:
