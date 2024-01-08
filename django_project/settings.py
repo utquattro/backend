@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_swagger',
+    'rest_framework.authtoken',
     'django_filters',
     'goods',
     'stock',

@@ -23,7 +23,7 @@ from django.urls import re_path as url
 from django.views.generic import TemplateView
 from drf_yasg.views import get_schema_view  # new
 from drf_yasg import openapi  # new
-
+from .views import login, signup, test_token
 
 schema_view = get_schema_view(  # new
     openapi.Info(
@@ -58,7 +58,10 @@ urlpatterns = [
     path('api/', include('goods.urls')),
     path('api/', include('shop_settings.urls')),
     path('api/', include('cart.urls')),
-    path('accounts', include("django.contrib.auth.urls"))
+    path('accounts', include("django.contrib.auth.urls")),
+    path('api/login', login),
+    path('api/test_token', test_token),
+    path('api/signup', signup),
 ]
 
 if settings.DEBUG:
