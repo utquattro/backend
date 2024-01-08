@@ -7,3 +7,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email']
 
+
+class PhoneSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+
+
+

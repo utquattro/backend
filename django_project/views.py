@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, PhoneSerializer
 
 @api_view(['POST'])
 def signup(request):
@@ -39,3 +39,14 @@ def login(request):
 @permission_classes([IsAuthenticated])
 def test_token(request):
     return Response("passed!")
+
+
+@api_view(['POST'])
+def send_sms(request):
+    try:
+        phone = request.data['phone']
+        return Response({"status": "ok",
+                         "sent": phone}, status=status.HTTP_200_OK)
+    except KeyError as e:
+        return Response({"Keyerror": str(e)})
+
