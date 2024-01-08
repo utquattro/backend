@@ -30,7 +30,7 @@ def login(request):
             return Response({"error": "ivalid code"}, status=status.HTTP_404_NOT_FOUND)
         token, created = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
-        return Response({'token': token.key})
+        return Response({'token': token.key, 'user': serializer.data})
     except BaseException as e:
         return Response({str(e)})
 
@@ -38,8 +38,15 @@ def login(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def test_token(request):
-    return Response("passed!")
-
+    token = request.auth
+    user = Token.objects.get(key=token).user
+    user_info = {
+        'username': user.username,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name
+    }
+    return Response(user_info)
 
 @api_view(['POST'])
 def send_sms(request):
