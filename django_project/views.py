@@ -27,7 +27,7 @@ def login(request):
     try:
         user = get_object_or_404(User, username=request.data['username'])
         if not request.data['code'] == 1111:
-            return Response({"error": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "ivalid code"}, status=status.HTTP_404_NOT_FOUND)
         token, created = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
         return Response({'token': token.key})
