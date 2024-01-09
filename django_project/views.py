@@ -27,12 +27,12 @@ def login(request):
     try:
         user = get_object_or_404(User, username=request.data['username'])
         if not request.data['code'] == 1111:
-            return Response({"error": "ivalid code"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
         token, created = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
-        return Response({'token': token.key, 'user': serializer.data})
-    except BaseException as e:
-        return Response({str(e)})
+        return Response({'token': token.key})
+    except KeyError as e:
+        return Response({"key error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
@@ -55,5 +55,5 @@ def send_sms(request):
         return Response({"status": "ok",
                          "sent": phone}, status=status.HTTP_200_OK)
     except KeyError as e:
-        return Response({"Keyerror": str(e)})
+        return Response({"key error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
