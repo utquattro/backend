@@ -34,7 +34,7 @@ def login(request):
         return Response({'token': token.key})
     except KeyError as e:
         return Response({"code": 1002,
-                         "message": f"invalid key {e}"}, status=status.HTTP_404_NOT_FOUND)
+                         "message": f"invalid key {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
