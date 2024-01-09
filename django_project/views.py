@@ -28,13 +28,13 @@ def login(request):
         user = get_object_or_404(User, username=request.data['username'])
         if not request.data['code'] == 1111:
             return Response({"code": 1001,
-                             "error": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
+                             "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
         token, created = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
         return Response({'token': token.key})
     except KeyError as e:
         return Response({"code": 1002,
-                         "error": f"invalid key {e}"}, status=status.HTTP_404_NOT_FOUND)
+                         "message": f"invalid key {e}"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
