@@ -3,7 +3,6 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
@@ -58,4 +57,12 @@ def send_sms(request):
                          "sent": phone}, status=status.HTTP_200_OK)
     except KeyError as e:
         return Response({"key error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_token(request):
+    request.user.auth_token.delete()
+    return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
