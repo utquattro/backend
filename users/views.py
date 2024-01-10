@@ -13,7 +13,7 @@ from .serializers import UserSerializer, PhoneSerializer
 def login_or_register(request):
     serializer = PhoneSerializer(data=request.data)
     if serializer.is_valid():
-        username = request.data.get('phone')
+        username = request.data.get('username')
         code = request.data.get('code')
         password = generate_password(12)
         name = generate_name(10)

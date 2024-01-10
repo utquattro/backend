@@ -37,6 +37,7 @@ schema_view = get_schema_view(  # new
     # url=f'{settings.APP_URL}/api/v3/',
     patterns=[path('api/', include('goods.urls')),
               path('api/', include('shop_settings.urls')),
+              path('api/', include('users.urls')),
               path('api/', include('cart.urls'))],
     public=True)
 
