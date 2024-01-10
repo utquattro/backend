@@ -6,20 +6,33 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-
+from django_project.services import generate_password, generate_name
 from .serializers import UserSerializer, PhoneSerializer
 
 @api_view(['POST'])
-def signup(request):
-    serializer = UserSerializer(data=request.data)
+def login_or_register(request):
+    serializer = PhoneSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        user = User.objects.get(username=request.data['username'])
-        user.set_password(request.data['password'])
-        user.save()
-        token = Token.objects.create(user=user)
-        return Response({'token': token.key})
-    return Response(serializer.errors, status=status.HTTP_200_OK)
+        username = request.data.get('phone')
+        code = request.data.get('code')
+        password = generate_password(12)
+        name = generate_name(10)
+        last_name = generate_name(16)
+        if code == 1111:
+            user = User.objects.filter(username=username).first()
+            if user is None:
+                # Если пользователя нет, создаем его с произвольным паролем
+                user = User.objects.create_user(username, password=password, first_name=name, last_name=last_name)
+                # Выдаем токен для нового пользователя
+                token = Token.objects.create(user=user)
+                return Response({'token': token.key})
+            else:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key})
+        else:
+            return Response({"code": 1001,
+                             "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def login(request):
@@ -35,6 +48,7 @@ def login(request):
         return Response({"code": 1002,
                          "message": f"invalid key {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -48,6 +62,7 @@ def get_profile_info(request):
         'last_name': user.last_name
     }
     return Response(user_info)
+
 
 @api_view(['POST'])
 def send_sms(request):

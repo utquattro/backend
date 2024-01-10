@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhoneSerializer(serializers.Serializer):
-    username = serializers.IntegerField()
+    phone = serializers.IntegerField()
     code = serializers.IntegerField()
 
 
