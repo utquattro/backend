@@ -36,19 +36,7 @@ def login_or_register(request):
                              "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def login(request):
-    try:
-        user = get_object_or_404(User, username=request.data['username'])
-        if not request.data['code'] == 1111:
-            return Response({"code": 1001,
-                             "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
-        token, created = Token.objects.get_or_create(user=user)
-        serializer = UserSerializer(user)
-        return Response({'token': token.key})
-    except KeyError as e:
-        return Response({"code": 1002,
-                         "message": f"invalid key {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['PUT'])
