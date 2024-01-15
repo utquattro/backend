@@ -2,12 +2,14 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django_project.services import generate_password, generate_name
-from .serializers import UserSerializer, PhoneSerializer
+from .serializers import UserSerializer, PhoneSerializer, UserEditSerializer
 
 @api_view(['POST'])
 def login_or_register(request):
@@ -47,6 +49,21 @@ def login(request):
     except KeyError as e:
         return Response({"code": 1002,
                          "message": f"invalid key {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def change_user_info(request):
+    token = request.auth
+    user = Token.objects.get(key=token).user
+    user_data = JSONParser().parse(request)
+
+    user_data_serializer = UserEditSerializer(user, data=user_data)
+    if user_data_serializer.is_valid():
+        user_data_serializer.save()
+        return JsonResponse(user_data_serializer.data)
+    return JsonResponse(user_data_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
