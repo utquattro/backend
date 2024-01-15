@@ -72,13 +72,9 @@ def change_user_info(request):
 def get_profile_info(request):
     token = request.auth
     user = Token.objects.get(key=token).user
-    user_info = {
-        'username': user.username,
-        'email': user.email,
-        'first_name': user.first_name,
-        'last_name': user.last_name
-    }
-    return Response(user_info)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
 
 
 @api_view(['POST'])

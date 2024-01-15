@@ -3,17 +3,19 @@ from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    phone = serializers.IntegerField(source="username", required=False)
+
     class Meta(object):
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['phone', 'email', 'first_name', 'last_name']
 
 
 class UserEditSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=False)
+    phone = serializers.IntegerField(source="username", required=False)
 
     class Meta(object):
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email']
+        fields = ['phone', 'email', 'first_name', 'last_name']
 
     def validate_email(self, value):
         user_id = self.instance.id
@@ -22,11 +24,11 @@ class UserEditSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A user with that email already exists.")
         return value
 
-    def validate_username(self, value):
+    def validate_phone(self, value):
         user_id = self.instance.id
         existing_user = User.objects.filter(username=value).exclude(id=user_id).first()
         if existing_user:
-            raise serializers.ValidationError("A user with that username already exists.")
+            raise serializers.ValidationError("A user with that phone already exists.")
         return value
 
 
