@@ -9,7 +9,7 @@ urlpatterns = [
     path('category/', GetAllCategory.as_view()),
     path('category/<slug:category_slug>/', GetCategoryProducts.as_view()),
     path('category/<slug:category_slug>/<slug:product_slug>/', GetProductSlugWithCategory.as_view()),
-    path('product/<int:pk>/', GetProductWithId.as_view()),
+    path('product/<slug:slug>/', GetProductWithId.as_view()),
     path('product/', ProductSkuView.as_view()),
 
 ]

@@ -79,8 +79,9 @@ class GetProductSlugWithCategory(RetrieveAPIView):
 
 class GetProductWithId(RetrieveAPIView):
     serializer_class = ProductSkuSerializer
+    lookup_field = "slug"
 
     def get_queryset(self):
-        product_sku_id = self.kwargs['pk']
-        product_sku = Goods().active_sku.filter(id=product_sku_id)
+        product_slug = self.kwargs['slug']
+        product_sku = Goods().active_sku.filter(slug=product_slug)
         return product_sku
