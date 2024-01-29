@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django_project.services import generate_password, generate_name
-from .serializers import UserSerializer, PhoneSerializer, UserEditSerializer
+from .serializers import UserSerializer, UserPhoneEditSerializer, UserInfoEditSerializer, PhoneSerializer
 
 @api_view(['POST'])
 def login_or_register(request):
@@ -22,6 +22,7 @@ def login_or_register(request):
         last_name = generate_name(16)
         if code == 1111:
             user = User.objects.filter(username=username).first()
+            print(username)
             if user is None:
                 # Если пользователя нет, создаем его с произвольным паролем
                 user = User.objects.create_user(username, password=password, first_name=name, last_name=last_name)
@@ -46,12 +47,33 @@ def change_user_info(request):
     token = request.auth
     user = Token.objects.get(key=token).user
     user_data = JSONParser().parse(request)
-
-    user_data_serializer = UserEditSerializer(user, data=user_data)
+    user_data_serializer = UserInfoEditSerializer(user, data=user_data)
     if user_data_serializer.is_valid():
         user_data_serializer.save()
         return JsonResponse(user_data_serializer.data)
     return JsonResponse(user_data_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['PUT'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def change_user_phone(request):
+    token = request.auth
+    user = Token.objects.get(key=token).user
+    user_data = JSONParser().parse(request)
+
+    user_data_serializer = UserPhoneEditSerializer(user, data=user_data)
+    if user_data_serializer.is_valid():
+        if user_data['code'] == 1111:
+            user_data_serializer.save()
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"code": 1001,
+                             "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return JsonResponse(user_data_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
