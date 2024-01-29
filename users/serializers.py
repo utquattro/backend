@@ -34,7 +34,7 @@ class UserPhoneEditSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = User
-        fields = ['phone', 'code']
+        fields = ['phone', 'code', 'email']
 
     def validate_phone(self, value):
         print(self.instance.id)
