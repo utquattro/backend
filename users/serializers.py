@@ -50,7 +50,6 @@ class UserPhoneEditSerializer(serializers.ModelSerializer):
 
 
 class PhoneSerializer(serializers.Serializer):
-    username = serializers.IntegerField(validators=[RegexValidator(regex='^7[9][0-9]{9}$',
-                                                                message='incorrect phone number')])
+    username = serializers.IntegerField()
     code = serializers.IntegerField(validators=[RegexValidator(regex='^\d{4}$',
                                                                message='Code must be a 4-digit number')])
