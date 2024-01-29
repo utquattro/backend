@@ -15,7 +15,7 @@ class UserInfoEditSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = User
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'email']
 
     def validate_email(self, value):
         user_id = self.instance.id
@@ -34,7 +34,7 @@ class UserPhoneEditSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = User
-        fields = ['phone', 'code', 'email']
+        fields = ['phone', 'code']
 
     def validate_phone(self, value):
         print(self.instance.id)
