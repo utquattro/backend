@@ -15,19 +15,20 @@ class CartProductSkuSerializer(serializers.ModelSerializer):
 
 
 class CartItemSkuSerializer(serializers.ModelSerializer):
-    title = serializers.CharField()
+    product_id = serializers.IntegerField(source="id")
+    quantity = serializers.IntegerField(min_value=1)
 
     class Meta:
         model = ProductSku
-        fields = ('id', 'sku', 'img_url', 'price', 'stock', 'title')
+        fields = ('id', 'product_id', 'quantity')
+
 
 class CartItemSerializer(serializers.Serializer):
-    product_sku = CartItemSkuSerializer()
+    product_id = CartItemSkuSerializer()
     quantity = serializers.IntegerField(min_value=1)
 
-
 class CartAddItemSerializer(serializers.Serializer):
-    product_sku_id = serializers.CharField()
+    product_id = serializers.IntegerField()
     quantity = serializers.IntegerField(min_value=1)
 
 

@@ -67,7 +67,8 @@ def change_user_phone(request):
     if user_data_serializer.is_valid():
         if user_data['code'] == 1111:
             user_data_serializer.save()
-            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+            print(type(user_data_serializer.data))
+            return JsonResponse(user_data_serializer.data)
         else:
             return Response({"code": 1001,
                              "message": "ivalid code"}, status=status.HTTP_400_BAD_REQUEST)

@@ -23,17 +23,15 @@ class CartObj(object):
         """
         Добавить продукт в корзину или обновить его количество.
         """
-        product_id = str(product.id)
-
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0}
+        product_id = product.id
 
         if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[int(product_id)] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
-            if self.cart[product_id]['quantity'] <= 0:
+            self.cart[int(product_id)] += quantity
+            if self.cart[int(product_id)] <= 0:
                 self.remove(product)
+        print('self cart', self.cart)
         self.save()
 
     def remove(self, product):
@@ -62,7 +60,7 @@ class CartObj(object):
         Подсчет стоимости товаров в корзине.
         """
 
-        return sum(Decimal(item['product_sku']['price']) * item['quantity'] for item in
+        return sum(Decimal(item['product_id']['price']) * item['quantity'] for item in
                    self.cart.values())
 
 
