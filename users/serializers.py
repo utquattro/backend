@@ -12,6 +12,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserInfoEditSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(validators=[RegexValidator(regex='^[a-zA-Zа-яА-ЯёЁ]+$',
+                                                                     message='incorrect first name ')],
+                                       required=False)
+    last_name = serializers.CharField(validators=[RegexValidator(regex='^[a-zA-Zа-яА-ЯёЁ]+$',
+                                                                    message='incorrect last name')],
+                                      required=False)
+    email = serializers.CharField(
+        validators=[RegexValidator(regex='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                                   message='incorrect email')],
+        required=False)
 
     class Meta(object):
         model = User
@@ -45,8 +55,6 @@ class UserPhoneEditSerializer(serializers.ModelSerializer):
         if existing_user:
             raise serializers.ValidationError("A user with that phone already exists.")
         return value
-
-
 
 
 class PhoneSerializer(serializers.Serializer):
