@@ -161,6 +161,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SESSION_COOKIE_SAMESITE = 'None'
 # CSRF_COOKIE_SECURE = True
 
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:4200',
+)
+
+
+
+
+
 CART_SESSION_ID = 'cart'
 
 
