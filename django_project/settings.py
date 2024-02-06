@@ -140,10 +140,16 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'Access-Control-Allow-Origin',
-]
+CORS_ALLOW_HEADERS = list(default_headers)
+#                      + [
+#     'Access-Control-Allow-Origin',
+# ]
 
+CORS_ALLOWED_ORIGINS = [
+
+"http://localhost:4200",
+
+]
 CORS_ORIGIN_ALLOW_ALL = True
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 #
