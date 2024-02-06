@@ -7,7 +7,7 @@ from goods.api import Goods
 from .serializers import CartAddItemSerializer, CartSerializer, CartItemSkuSerializer, CartItemSerializer
 
 
-
+@authentication_classes([SessionAuthentication])
 @api_view(['GET'])
 def cart_view(request):
     try:
