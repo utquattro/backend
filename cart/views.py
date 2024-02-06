@@ -7,7 +7,7 @@ from goods.api import Goods
 from .serializers import CartAddItemSerializer, CartSerializer, CartItemSkuSerializer, CartItemSerializer
 
 
-@authentication_classes([SessionAuthentication])
+
 @api_view(['GET'])
 def cart_view(request):
     try:
@@ -21,7 +21,7 @@ def cart_view(request):
         return Response({'error': str(e)}, status=400)
 
 
-@authentication_classes([SessionAuthentication])
+
 @api_view(['POST'])
 def cart_add(request):
     try:
