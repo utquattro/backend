@@ -14,7 +14,6 @@ from decouple import config, Csv
 from pathlib import Path
 from corsheaders.defaults import default_headers
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -163,15 +162,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-  'http://localhost:4200',
+    'http://localhost:4200',
 )
 
-
-
-
+CORS_ALLOW_HEADERS = (
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Credentials',
+)
 
 CART_SESSION_ID = 'cart'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
