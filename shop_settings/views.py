@@ -1,5 +1,5 @@
 from .api import ShopSetting
-from .serializers import SettingsSerializer, MarketingBannerSerializer
+from .serializers import SettingsSerializer, MarketingBannerSerializer, CatCollectSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
 
@@ -19,5 +19,5 @@ class Settings(RetrieveAPIView):
 
 class GetAllCollection(ListAPIView):
     queryset = ShopSetting().active_cat_collection
-    serializer_class = MarketingBannerSerializer
+    serializer_class = CatCollectSerializer
 

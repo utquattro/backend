@@ -33,3 +33,7 @@ class SettingsSerializer(serializers.Serializer):
         model = Settings
         fields = ('logo', 'phone_main', 'phone_sec', 'copyright', 'social', 'pay_system')
 
+class CatCollectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MarketingBanner
+        fields = ('name', 'description', 'link', 'img_url', 'active')
