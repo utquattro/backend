@@ -28,7 +28,7 @@ class MarketingBanner(ImgModel):
 
 class Settings(BaseModel):
     """"""
-    logo = models.ImageField(blank=False, upload_to='images/shop_settings/logo')
+    logo = models.FileField(blank=False, upload_to='images/shop_settings/logo')
     phone_main = models.TextField(max_length=500, blank=False)
     phone_sec = models.TextField(max_length=500, blank=False)
     copyright = models.TextField(max_length=500, blank=False)
