@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PaySystem, Socical, MarketingBanner, Settings
+from .models import PaySystem, Socical, MarketingBanner, Settings, CategoryCollect
 
 
 class SocicalSerializer(serializers.ModelSerializer):
@@ -35,5 +35,5 @@ class SettingsSerializer(serializers.Serializer):
 
 class CatCollectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MarketingBanner
+        model = CategoryCollect
         fields = ('name', 'description', 'link', 'img_url', 'active')
