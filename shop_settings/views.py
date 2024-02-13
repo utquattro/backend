@@ -15,3 +15,9 @@ class Settings(RetrieveAPIView):
     def get_object(self):
         obj = ShopSetting().active_settings
         return get_object_or_404(obj)
+
+
+class GetAllCollection(ListAPIView):
+    queryset = ShopSetting().active_cat_collection
+    serializer_class = MarketingBannerSerializer
+

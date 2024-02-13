@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PaySystem, Socical, MarketingBanner, Settings
+from .models import PaySystem, Socical, MarketingBanner, Settings, CategoryCollect
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -28,7 +28,15 @@ class MarketingBannerAdmin(BaseAdmin):
         return queryset.filter(active=True)
 
 
+class CategoryCollectAdmin(BaseAdmin):
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(active=True)
+
+
+
 admin.site.register(PaySystem, BaseAdmin)
 admin.site.register(Socical, BaseAdmin)
 admin.site.register(Settings, SettingsAdmin)
 admin.site.register(MarketingBanner, MarketingBannerAdmin)
+admin.site.register(CategoryCollect, CategoryCollectAdmin)

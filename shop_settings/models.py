@@ -38,3 +38,14 @@ class Settings(BaseModel):
 
     def __str__(self):
         return str('main settings model')
+
+
+class CategoryCollect(ImgModel):
+    """"""
+    name = models.TextField(unique=True, blank=False)
+    link = models.TextField(verbose_name='ссылка на соц.сеть')
+    img_url = models.ImageField(upload_to='images/shop_settings/cat_collect')
+
+    def __str__(self):
+        return self.name
+
