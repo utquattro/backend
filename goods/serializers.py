@@ -60,5 +60,9 @@ class ProductSkuSerializer(serializers.ModelSerializer):
                   'img_url', 'price', 'stock', 'characteristics', 'active', 'created_at')
 
 
+class RecommendedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSku
+        fields = ('title', 'slug', 'img_url', 'price')
 
 

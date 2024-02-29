@@ -2,7 +2,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 from .api import Cat, Brands, Goods
-from .serializers import BrandSerializer, CategorieSerializer, ProductSkuSerializer
+from .serializers import BrandSerializer, CategorieSerializer, ProductSkuSerializer, RecommendedProductSerializer
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from django.shortcuts import get_object_or_404, get_list_or_404
 import json
@@ -13,6 +13,7 @@ from cart.serializers import CartItemSkuSerializer
 from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
 from .service import ProductFilter
+from random import sample
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -85,3 +86,12 @@ class GetProductWithId(RetrieveAPIView):
         product_slug = self.kwargs['slug']
         product_sku = Goods().active_sku.filter(slug=product_slug)
         return product_sku
+
+
+class RecommendedProduct(ListAPIView):
+    serializer_class = RecommendedProductSerializer
+
+    def get_queryset(self):
+        count = self.request.GET['count']
+        queryset = Goods().active_sku.order_by('?')[:int(count)]
+        return queryset

@@ -1,6 +1,6 @@
 from django.urls import path
 from goods.views import GetAllCategory, GetAllBrands, GetCategoryProducts,GetProductSlugWithCategory, \
-    GetProductWithId, GetAllSlider, ProductSkuView
+    GetProductWithId, GetAllSlider, ProductSkuView, RecommendedProduct
 
 urlpatterns = [
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path('category/<slug:category_slug>/', GetCategoryProducts.as_view()),
     path('category/<slug:category_slug>/<slug:product_slug>/', GetProductSlugWithCategory.as_view()),
     path('product/<slug:slug>/', GetProductWithId.as_view()),
-    path('product/', ProductSkuView.as_view()),
-
+    # path('product/', ProductSkuView.as_view()),
+    path('products/recommended', RecommendedProduct.as_view()),
 ]
 
