@@ -92,12 +92,23 @@ class RecommendedProduct(ListAPIView):
     serializer_class = RecommendedProductSerializer
 
     def get_queryset(self):
-        count = self.request.GET['count']
-        category_slug = self.request.GET['category_slug']
-        if count is None:
-            return {'ops'}
-        queryset = Goods().active_sku.filter(category__slug=category_slug).order_by('?')[:int(count)]
-        return queryset
+        try:
+            count = int(self.request.GET['count'])
+            category = self.request.GET['category']
+
+            if count >= 1:
+                if category == 'all':
+                    products = Goods().active_sku.order_by('?')[:count]
+                else:
+                    products = Goods().active_sku.filter(category__slug=category).order_by('?')[:count]
+            else:
+                return Response({"Count must be greater than 1"}, status=status.HTTP_400_BAD_REQUEST)
+
+            serializer = RecommendedProductSerializer(products, many=True)
+
+            return products
+        except (KeyError, ValueError) as e:
+            return None
 
 
 @api_view(['GET'])
