@@ -107,7 +107,10 @@ def get_rec(request):
         category = request.GET['category']
 
         if count >= 1:
-            products = Goods().active_sku.filter(category__slug=category).order_by('?')[:count]
+            if category == 'all':
+                products = Goods().active_sku.order_by('?')[:count]
+            else:
+                products = Goods().active_sku.filter(category__slug=category).order_by('?')[:count]
         else:
             return Response({"Count must be greater than 1"}, status=status.HTTP_400_BAD_REQUEST)
 
