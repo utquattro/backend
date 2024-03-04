@@ -10,7 +10,7 @@ urlpatterns = [
     path('category/<slug:category_slug>/', GetCategoryProducts.as_view()),
     path('category/<slug:category_slug>/<slug:product_slug>/', GetProductSlugWithCategory.as_view()),
     path('product/<slug:slug>/', GetProductWithId.as_view()),
-    # path('product/', ProductSkuView.as_view()),
+    path('product/', ProductSkuView.as_view()),
     path('products/recommended', RecommendedProduct.as_view()),
     #path('products/rec', RecommendedProduct.as_view()),
 ]
