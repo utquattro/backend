@@ -88,7 +88,7 @@ class ProductSku(BaseModel):
     sku = models.TextField(max_length=100, blank=False, null=True, unique=True,
                            verbose_name='Артикул товара')
     characteristics = models.ManyToManyField(Characteristic, related_name="sku_char")
-    raiting = models.DecimalField(blank=True, null=True, max_digits=2, decimal_places=1,
+    rate = models.DecimalField(blank=True, null=True, max_digits=2, decimal_places=1,
                                   validators=[MinValueValidator(0), MaxValueValidator(10)])
     price = models.PositiveIntegerField(blank=False, null=True, validators=[MinValueValidator(1)],
                                         verbose_name='Цена')
