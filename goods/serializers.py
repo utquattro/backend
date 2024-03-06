@@ -53,6 +53,7 @@ class ProductSkuSerializer(serializers.ModelSerializer):
     category = CategorieProductSerializer(read_only=True)
     brand = BrandProductSerializer(read_only=True)
     created_at = serializers.DateTimeField(format="%d-%m-%Y-%g")
+    rate = serializers.FloatField()
 
     class Meta:
         model = ProductSku
@@ -61,8 +62,10 @@ class ProductSkuSerializer(serializers.ModelSerializer):
 
 
 class RecommendedProductSerializer(serializers.ModelSerializer):
+    rate = serializers.FloatField()
+
     class Meta:
         model = ProductSku
-        fields = ('title', 'slug', 'img_url', 'price')
+        fields = ('title', 'slug', 'img_url',  'rate', 'price')
 
 
