@@ -37,7 +37,7 @@ class Categorie(BaseModel):
 
 
 class CharacteristicName(BaseModel):
-    name = models.CharField(max_length=50, unique=True, blank=False,
+    name = models.CharField(max_length=30, unique=True, blank=False,
                             verbose_name='Имя характеристики')
 
     def __str__(self):
