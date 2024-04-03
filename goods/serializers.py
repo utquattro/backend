@@ -69,3 +69,10 @@ class RecommendedProductSerializer(serializers.ModelSerializer):
         fields = ('title', 'slug', 'img_url',  'rate', 'price')
 
 
+class ProductCartDeleteSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = ProductSku
+        fields = ('id',)
+

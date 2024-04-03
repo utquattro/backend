@@ -10,6 +10,17 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django_project.services import generate_password, generate_name
 from .serializers import UserSerializer, UserPhoneEditSerializer, UserInfoEditSerializer, PhoneSerializer
+from django.contrib.auth import get_user_model
+
+
+def get_user_id_from_token(token):
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_id = token_obj.user_id
+        return user_id
+    except Token.DoesNotExist:
+        return None
+
 
 @api_view(['POST'])
 def login_or_register(request):
@@ -38,8 +49,6 @@ def login_or_register(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
 @api_view(['PUT'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -52,7 +61,6 @@ def change_user_info(request):
         user_data_serializer.save()
         return JsonResponse(user_data_serializer.data)
     return JsonResponse(user_data_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['PUT'])
@@ -76,7 +84,6 @@ def change_user_phone(request):
     return JsonResponse(user_data_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -85,7 +92,6 @@ def get_profile_info(request):
     user = Token.objects.get(key=token).user
     serializer = UserSerializer(user)
     return Response(serializer.data)
-
 
 
 @api_view(['POST'])
@@ -104,4 +110,3 @@ def send_sms(request):
 def delete_token(request):
     request.user.auth_token.delete()
     return Response({"status": "ok"}, status=status.HTTP_200_OK)
-

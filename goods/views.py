@@ -9,7 +9,6 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from cart.serializers import CartItemSkuSerializer
 from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
 from .service import ProductFilter
