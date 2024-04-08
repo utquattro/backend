@@ -26,7 +26,7 @@ class UserCartView(APIView):
             return Response(serializer.data)
         else:
             print("false")
-            return Response({}, status=500)
+            return Response({'error': 1005, 'message': f"Cart is empty"}, status=200)
 
 
 

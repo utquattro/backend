@@ -9,7 +9,6 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = ['session_key', '_session_data', 'expire_date']
 
 
-
 class BaseAdmin(admin.ModelAdmin):
     """"""
     list_display = (
@@ -20,13 +19,13 @@ class BaseAdmin(admin.ModelAdmin):
 class CartAdmin(BaseAdmin):
     """"""
     list_display = (
-        'id',  'user', 'active',)
+        'id',  'user', 'active', 'created_at', 'updated_at',)
 
 
 class CartItemAdmin(BaseAdmin):
     """"""
     list_display = (
-        'id', 'cart', 'product', 'quantity', 'active',)
+        'id', 'cart', 'product', 'quantity', 'active', 'created_at', 'updated_at', 'active')
 
 
 admin.site.register(Session, SessionAdmin)
