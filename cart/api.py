@@ -26,7 +26,7 @@ class CartObj(object):
         Добавить продукт в корзину или обновить его количество.
         """
         add_product = Goods().get_product_by_id(product_id)
-        if add_product.stock <= quantity:
+        if add_product.stock < quantity:
             return {'error': 1001, 'message': f"Переданное количество больше чем есть на складе"}
         try:
             tom = CartItem.objects.get(cart=self.cart_id, product=add_product.id)
@@ -56,7 +56,6 @@ class CartObj(object):
         """
         Подсчет всех товаров в корзине.
         """
-        print('len start')
         return sum(item['quantity'] for item in self.cart_items.values())
 
     def get_total_price(self):
