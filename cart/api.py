@@ -19,7 +19,7 @@ class CartObj(object):
             # save an empty cart in the session
             cart = Cart.objects.create(user=self.user_id)
         self.cart_id = cart
-        self.cart_items = CartItem.objects.filter(cart=self.cart_id)
+        self.cart_items = CartItem.objects.filter(cart=self.cart_id).order_by('created_at')
 
     def add(self, product_id, quantity=1, update_quantity=False):
         """
