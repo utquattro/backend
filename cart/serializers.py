@@ -2,12 +2,15 @@ from django.core.validators import MinValueValidator
 from rest_framework import serializers
 from .models import CartItem, Cart
 from goods.models import ProductSku
-from goods.serializers import RecommendedProductSerializer
+from goods.serializers import RecommendedProductSerializer, ProductSkuSerializer
 
 
-class CartItemSerializer(serializers.Serializer):
-    quantity = serializers.IntegerField(validators=[MinValueValidator(1)])
-    product = RecommendedProductSerializer()
+class CartItemSerializer(serializers.ModelSerializer):
+    product = RecommendedProductSerializer(read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = ('product', 'quantity',)
 
 
 class CartDeleteSerializer(serializers.ModelSerializer):

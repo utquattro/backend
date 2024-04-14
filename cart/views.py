@@ -1,12 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .models import CartItem, Cart
-from .serializers import CartItemSerializer, CartSerializer, CartAddItemSerializer, CartDeleteSerializer
-from goods.api import Goods
+from .serializers import CartSerializer, CartAddItemSerializer, CartDeleteSerializer
 from .api import CartObj
 
 
@@ -15,20 +12,21 @@ class UserCartView(APIView):
     authentication_classes = ([TokenAuthentication])
 
     def get(self, request):
-        df = CartObj(request)
-        if df.cart_items:
-            f = {"cart_items": df.cart_items,
-                 "total_cost": df.get_total_price(),
-                 "total_goods": df.cart_items.count,
-                 "total_quantity": len(df)
-                 }
-            serializer = CartSerializer(f)
-            return Response(serializer.data)
+        cart = CartObj(request)
+        cart_items = cart.cart_items
+        if cart_items:
+            resp = {"cart_items": cart_items,
+                    "total_cost": cart.get_total_price(),
+                    "total_goods": cart_items.count,
+                    "total_quantity": len(cart)
+                    }
+            serializer = CartSerializer(resp)
+            data = serializer.data
+            for i in data['cart_items']:
+                i['product']['img_url'] = f"{request.scheme}://{request.get_host()}{i['product']['img_url']}"
+            return Response(data)
         else:
-            print("false")
             return Response({'error': 1005, 'message': f"Cart is empty"}, status=200)
-
-
 
 
 class AddToCartView(APIView):
