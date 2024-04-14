@@ -23,7 +23,11 @@ class UserCartView(APIView):
             serializer = CartSerializer(resp)
             data = serializer.data
             for i in data['cart_items']:
-                i['product']['img_url'] = f"{request.scheme}://{request.get_host()}{i['product']['img_url']}"
+                if i['product']['img_url']:
+                    i['product']['img_url'] = f"{request.scheme}://{request.get_host()}{i['product']['img_url']}"
+                else:
+                    i['product']['img_url'] = None
+
             return Response(data)
         else:
             return Response({'error': 1005, 'message': f"Cart is empty"}, status=200)
