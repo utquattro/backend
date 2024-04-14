@@ -59,14 +59,11 @@ class ProductAdmin(BaseAdmin):
 
 class ProductItemAdmin(BaseAdmin):
     list_display = (
-        'id', 'name',  'category', 'rate', 'brand', 'sku', 'price', 'stock',  'description', 'img_url',
+        'id', 'category', 'name', 'title',  'rate', 'brand', 'sku', 'price', 'stock',  'description', 'img_url',
         'created_at', 'updated_at', 'active')
-
-    pass
 
 
 admin.site.register(Categorie, CategorieAdmin)
-
 admin.site.register(ProductSku, ProductItemAdmin)
 admin.site.register(CharacteristicName, CharacteristicNameAdmin)
 admin.site.register(CharacteristicValue, CharacteristicValueAdmin)
