@@ -9,8 +9,11 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django_project.services import generate_password, generate_name
-from .serializers import UserSerializer, UserPhoneEditSerializer, UserInfoEditSerializer, PhoneSerializer
+from .serializers import (UserSerializer, UserPhoneEditSerializer,
+                          UserInfoEditSerializer, PhoneSerializer)
+from django_project.serializers import AddressSerializer
 from django.contrib.auth import get_user_model
+from django_project.services import get_address_list_from_dadata
 
 
 def get_user_id_from_token(token):
@@ -110,3 +113,16 @@ def send_sms(request):
 def delete_token(request):
     request.user.auth_token.delete()
     return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_address_list(request):
+    address = request.GET.get('address', '')
+    if address and len(address) > 3:
+        data = get_address_list_from_dadata(address)
+        ser = AddressSerializer(data, many=True)
+        return Response(ser.data)
+    else:
+        return Response([], status=404)

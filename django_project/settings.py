@@ -182,3 +182,5 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+DADATA_TOKEN = config('DADATA_TOKEN')
+
