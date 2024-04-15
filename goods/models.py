@@ -81,7 +81,7 @@ class Characteristic(BaseModel):
 class ProductSku(BaseModel):
     """"""
     name = models.TextField(max_length=250, null=True, verbose_name='Название продукта')
-    title = models.TextField(max_length=500, blank=True, null=True, verbose_name='title продукта')
+    title = models.TextField(max_length=100, blank=True, null=True, verbose_name='title продукта')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, verbose_name='Бренд продукта')
     category = models.ForeignKey(Categorie, null=True, on_delete=models.CASCADE, verbose_name='Категория')
     slug = models.SlugField(max_length=255, unique=True, null=True, db_index=True, verbose_name="URL")
