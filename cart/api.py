@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.shortcuts import get_object_or_404
-
+from .serializers import CartSerializer
 from cart.models import Cart, CartItem
 from goods.api import Goods
 
@@ -20,6 +20,26 @@ class CartObj(object):
             cart = Cart.objects.create(user=self.user_id)
         self.cart_id = cart
         self.cart_items = CartItem.objects.filter(cart=self.cart_id).order_by('-created_at')
+
+    def get_cart_info(self, request):
+        if self.cart_items:
+            resp = {"cart_items": self.cart_items,
+                    "total_cost": self.get_total_price(),
+                    "total_goods": self.cart_items.count,
+                    "total_quantity": len(self)
+                    }
+            serializer = CartSerializer(resp)
+            data = serializer.data
+            for i in data['cart_items']:
+                if i['product']['img_url']:
+                    i['product']['img_url'] = f"{request.scheme}://{request.get_host()}{i['product']['img_url']}"
+                else:
+                    i['product']['img_url'] = None
+            return data
+        else:
+            return {'error': 1005, 'message': f"Cart is empty"}
+
+
 
     def add(self, product_id, quantity=1, update_quantity=False):
         """

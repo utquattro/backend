@@ -13,24 +13,8 @@ class UserCartView(APIView):
 
     def get(self, request):
         cart = CartObj(request)
-        cart_items = cart.cart_items
-        if cart_items:
-            resp = {"cart_items": cart_items,
-                    "total_cost": cart.get_total_price(),
-                    "total_goods": cart_items.count,
-                    "total_quantity": len(cart)
-                    }
-            serializer = CartSerializer(resp)
-            data = serializer.data
-            for i in data['cart_items']:
-                if i['product']['img_url']:
-                    i['product']['img_url'] = f"{request.scheme}://{request.get_host()}{i['product']['img_url']}"
-                else:
-                    i['product']['img_url'] = None
-
-            return Response(data)
-        else:
-            return Response({'error': 1005, 'message': f"Cart is empty"}, status=200)
+        cart_items = cart.get_cart_info(request=request)
+        return Response(cart_items)
 
 
 class AddToCartView(APIView):
@@ -46,7 +30,7 @@ class AddToCartView(APIView):
                 product_id = valid_data['product']
                 quantity = valid_data['quantity']
                 ff = new_cart.add(product_id=product_id, quantity=quantity, update_quantity=True)
-                return Response(ff, status=200)
+                return Response(new_cart.get_cart_info(request=request), status=200)
 
             return Response(serializer.errors, status=400)
         except KeyError as e:
@@ -65,7 +49,7 @@ class DeleteToCartView(APIView):
                 valid_data = serializer.data
                 product_id = valid_data['product_id']
                 ff = new_cart.remove(product=product_id)
-                return Response(ff, status=200)
+                return Response(new_cart.get_cart_info(request=request), status=200)
 
             return Response(serializer.errors, status=400)
         except ObjectDoesNotExist as e:
