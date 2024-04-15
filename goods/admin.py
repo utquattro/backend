@@ -59,13 +59,15 @@ class ProductAdmin(BaseAdmin):
 
 class ProductItemAdmin(BaseAdmin):
     list_display = (
-        'id', 'category', 'name', 'title',  'get_title_length', 'rate', 'brand', 'sku', 'price', 'stock', 'description',
+        'id', 'category', 'name', 'title', 'get_title_length', 'rate', 'brand', 'sku', 'price', 'stock', 'description',
         'img_url',
         'created_at', 'updated_at', 'active')
-    list_filter = ('title', )
+    list_filter = ('title',)
 
     def get_title_length(self, obj):
         return len(obj.title)
+
+    get_title_length.admin_order_field = '-title'
 
 
 admin.site.register(Categorie, CategorieAdmin)
