@@ -3,7 +3,7 @@ import string
 from django.conf import settings
 from dadata import Dadata
 from transliterate import translit
-
+from requests.exceptions import HTTPError
 
 class Address:
     def __init__(self):
@@ -33,15 +33,20 @@ def generate_name(length):
 def get_address_list_from_dadata(query):
     token = settings.DADATA_TOKEN
     dadata = Dadata(token)
-    result = dadata.suggest("address", query,)
-    address_list = []
-    for item in result:
-        address = Address()
-        address.value = item["value"]
-        address.unrestricted_value = item["unrestricted_value"]
-        address.fias_id = item["data"]["fias_id"]
-        address.city = item["data"]["city"]
-        address_list.append(address)
-
-    return address_list
+    try:
+        result = dadata.suggest("address", query,)
+        address_list = []
+        for item in result:
+            address = Address()
+            address.value = item["value"]
+            address.unrestricted_value = item["unrestricted_value"]
+            address.fias_id = item["data"]["fias_id"]
+            address.city = item["data"]["city"]
+            address_list.append(address)
+        return address_list
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+        return None
+    except Exception as err:
+        print(f'Other error occurred: {err}')
 
