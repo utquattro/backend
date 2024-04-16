@@ -54,3 +54,17 @@ class DeleteToCartView(APIView):
             return Response(serializer.errors, status=400)
         except ObjectDoesNotExist as e:
             return Response({'error': f"{product_id}  не найден в корзине"}, status=400)
+
+
+class ClearCartView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = ([TokenAuthentication])
+
+    def post(self, request):
+        try:
+            new_cart = CartObj(request)
+            ff = new_cart.clear()
+            return Response(new_cart.get_cart_info(request=request), status=200)
+
+        except ObjectDoesNotExist as e:
+            return Response({'error': f"{e}"}, status=400)

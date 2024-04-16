@@ -39,8 +39,6 @@ class CartObj(object):
         else:
             return {'error': 1005, 'message': f"Cart is empty"}
 
-
-
     def add(self, product_id, quantity=1, update_quantity=False):
         """
         Добавить продукт в корзину или обновить его количество.
@@ -70,7 +68,15 @@ class CartObj(object):
         f.delete()
         return {'success': True, 'message': f"Продукт {product} удален."}
 
+    def clear(self):
+        """
+        Удаление корзины.
+        """
 
+        f = Cart.objects.get(user=self.user_id)
+        f.delete()
+
+        return {'success': True, 'message': f"Cart is clear."}
 
     def __len__(self):
         """
@@ -89,6 +95,3 @@ class CartObj(object):
             sum = sum + (good.price * quan)
 
         return sum
-
-
-
